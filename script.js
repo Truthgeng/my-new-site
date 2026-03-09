@@ -46,23 +46,18 @@ async function callAI(system, messages, maxTokens, modelOverride = null, isJson 
     }
 
     try {
-        const res = await fetch(AI_PROXY_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.access_token}`
-            },
-            body: JSON.stringify(aiPayload)
+        const { data, error } = await sb.functions.invoke('ai-proxy', {
+            body: aiPayload
         });
 
-        if (!res.ok) {
-            const errData = await res.json().catch(() => ({}));
+        if (error) {
             // Show rate limit message clearly to user
-            if (res.status === 429) throw new Error(errData.error || 'Daily pitch limit reached. Upgrade to Pro for unlimited pitches.');
-            throw new Error(errData.error || `AI service error (${res.status}). Please try again.`);
+            if (error.status === 429 || (error.context && error.context.status === 429)) {
+                throw new Error('Daily pitch limit reached. Upgrade to Pro for unlimited pitches.');
+            }
+            throw new Error(`AI service error. Please try again.`);
         }
 
-        const data = await res.json();
         return data.content || '';
     } catch (e) {
         throw e;
@@ -511,20 +506,14 @@ async function generateInviteCode() {
 
         console.log('[GenCode] Calling generate-admin-code with user:', session.user?.email);
 
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/generate-admin-code`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.access_token}`
-            },
-            body: JSON.stringify({ durationDays: duration })
+        const { data, error: invokeError } = await sb.functions.invoke('generate-admin-code', {
+            body: { durationDays: duration }
         });
 
-        console.log('[GenCode] Response status:', res.status);
-        const data = await res.json();
-        console.log('[GenCode] Response body:', JSON.stringify(data));
-
-        if (!res.ok) throw new Error(`[${res.status}] ${data.error || JSON.stringify(data)}`);
+        if (invokeError) {
+            console.error('[GenCode] Response error:', invokeError);
+            throw new Error(`[${invokeError.status || 500}] ${invokeError.message || 'Error generating code'}`);
+        }
 
         const expiryText = `Expires ${new Date(data.expires_at).toLocaleString()} · ${data.duration_days} days Pro`;
         document.getElementById('genCodeText').textContent = data.code;
