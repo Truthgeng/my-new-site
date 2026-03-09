@@ -39,7 +39,7 @@ const PRICES: Record<string, number> = {
 const ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://pitchprotocol.vercel.app", // ← replace with your real domain
+    "https://www.pitchprotocolhq.xyz", // ← replace with your real domain
 ];
 
 function corsHeaders(origin: string | null) {

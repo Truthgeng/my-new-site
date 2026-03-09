@@ -20,11 +20,11 @@ function corsHeaders(origin: string | null) {
         (
             origin.startsWith("http://localhost") ||
             origin.startsWith("http://127.0.0.1") ||
-            origin === "https://pitchprotocol.vercel.app" ||
-            /^https:\/\/pitchprotocol.*\.vercel\.app$/.test(origin) ||
+            origin === "https://www.pitchprotocolhq.xyz" ||
+            origin === "https://pitchprotocolhq.xyz" ||
             /^https:\/\/[a-z0-9-]+-[a-z0-9]+-[a-z0-9]+\.vercel\.app$/.test(origin)
         );
-    const allowed = isAllowed ? origin : "https://pitchprotocol.vercel.app";
+    const allowed = isAllowed ? origin : "https://www.pitchprotocolhq.xyz";
     return {
         "Access-Control-Allow-Origin": allowed,
         "Access-Control-Allow-Methods": "POST, OPTIONS",

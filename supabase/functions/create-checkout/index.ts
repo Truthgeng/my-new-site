@@ -10,7 +10,7 @@ const ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:55835",
     "http://127.0.0.1:3000",
-    "https://pitchprotocol.vercel.app"
+    "https://www.pitchprotocolhq.xyz"
 ];
 
 function corsHeaders(origin: string | null) {
