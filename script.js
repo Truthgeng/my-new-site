@@ -148,9 +148,6 @@ sb.auth.onAuthStateChange(async (event, session) => {
             // Check if we are already loading or just loaded this user to debounce rapid events
             if (lastLoadedUserId === currentUser.id && profileLoadPromise) {
                 console.log("[Auth] Debouncing duplicate profile load for:", currentUser.id);
-                // Wait for the in-flight profile fetch to finish instead of returning early.
-                // This ensures the UI only updates AFTER data is fetched, without duplicate DB calls.
-                await profileLoadPromise;
             } else {
                 console.log("Loading profile for:", currentUser.id, "event:", event);
                 lastLoadedUserId = currentUser.id;
@@ -206,12 +203,10 @@ sb.auth.onAuthStateChange(async (event, session) => {
                     }
 
                     try { await loadHistory(); } catch (e) { console.warn("loadHistory failed", e); }
-                })();
 
-                // If we initiated a new fetch, wait for it
-                if (lastLoadedUserId === currentUser.id) {
-                    await profileLoadPromise;
-                }
+                    // Profile data loaded asynchronously: Update the UI!
+                    updateAuthUI();
+                })();
             }
         } else {
             lastLoadedUserId = null;
