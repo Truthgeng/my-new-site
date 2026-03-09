@@ -133,7 +133,10 @@ sb.auth.onAuthStateChange(async (event, session) => {
     // On successful OAuth sign-in, clean the URL and close the modal
     if (event === 'SIGNED_IN') {
         if (window.location.search.includes('code') || window.location.hash.includes('access_token')) {
-            window.history.replaceState({}, document.title, window.location.pathname);
+            // Delay URL cleanup slightly so Supabase has time to finish parsing and saving
+            setTimeout(() => {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }, 500);
         }
         closeAuthModal();
     }
