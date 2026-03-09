@@ -1,0 +1,26 @@
+const puppeteer = require('puppeteer');
+
+(async () => {
+  const browser = await puppeteer.launch({ headless: 'new' });
+  const page = await browser.newPage();
+  
+  page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+  page.on('pageerror', err => console.log('PAGE ERROR:', err.toString()));
+  
+  await page.goto('http://localhost:3000');
+  
+  // Try to click sign in button to see if it triggers an error
+  try {
+    const signInBtn = await page.$('button[onclick="openAuthModal()"]');
+    if (signInBtn) {
+       console.log('Clicking sign in button...');
+       await signInBtn.click();
+    }
+  } catch (e) {
+    console.log("Could not click sign in:", e);
+  }
+
+  // Wait a moment for async errors
+  await new Promise(r => setTimeout(r, 1000));
+  await browser.close();
+})();

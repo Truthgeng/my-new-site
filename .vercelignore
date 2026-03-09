@@ -1,0 +1,14 @@
+# Server-side / dev-only files — not needed on Vercel static hosting
+node_modules/
+monetization.ts
+monetization_schema.sql
+subscription_schema.sql
+supabase/
+
+# Test scripts
+test-auth.js
+test-auth-2.js
+test-page.js
+
+# macOS metadata
+.DS_Store

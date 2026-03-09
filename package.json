@@ -1,0 +1,11 @@
+{
+    "name": "pitchprotocol",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "npx serve . -p 3000"
+    },
+    "dependencies": {
+        "@supabase/supabase-js": "^2.97.0",
+        "puppeteer": "^24.37.5"
+    }
+}

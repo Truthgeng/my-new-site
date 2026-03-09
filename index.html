@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PitchProtocol — Get In The Door</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="style.css?v=1">
+</head>
+<!-- Google icon reused via SVG symbol -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="icon-google" viewBox="0 0 24 24">
+        <path fill="#4285F4"
+            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+        <path fill="#34A853"
+            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+        <path fill="#FBBC05"
+            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+        <path fill="#EA4335"
+            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+    </symbol>
+</svg>
+
+<body>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <button class="modal-close" id="btnAuthModalClose">✕</button>
+            <h2 class="modal-title">Welcome to<br><em>PitchProtocol</em></h2>
+            <p class="modal-sub">Sign in to save your pitch sessions and chat history across devices.</p>
+            <div class="modal-tabs">
+                <button class="modal-tab active" id="tabSignIn" onclick="switchTab('signin')">Sign In</button>
+                <button class="modal-tab" id="tabSignUp" onclick="switchTab('signup')">Create Account</button>
+            </div>
+            <!-- Sign In Form -->
+            <div class="modal-form" id="formSignIn">
+                <div class="modal-field">
+                    <label class="modal-label">Email</label>
+                    <input class="modal-input" type="email" id="signinEmail" placeholder="you@example.com" />
+                </div>
+                <div class="modal-field">
+                    <label class="modal-label">Password</label>
+                    <input class="modal-input" type="password" id="signinPassword" placeholder="••••••••"
+                        onkeydown="if(event.key==='Enter')handleSignIn()" />
+                </div>
+                <button type="button" class="modal-submit" id="signinBtn" onclick="handleSignIn()"><span>Sign In
+                        →</span></button>
+                <div class="modal-divider"><span>or</span></div>
+                <button type="button" class="google-btn" onclick="handleGoogleAuth(this)">
+                    <svg width="16" height="16">
+                        <use href="#icon-google" />
+                    </svg>
+                    Continue with Google
+                </button>
+                <div class="modal-msg" id="signinMsg"></div>
+            </div>
+            <!-- Sign Up Form -->
+            <div class="modal-form hidden" id="formSignUp">
+                <div class="modal-field">
+                    <label class="modal-label">Email</label>
+                    <input class="modal-input" type="email" id="signupEmail" placeholder="you@example.com" />
+                </div>
+                <div class="modal-field">
+                    <label class="modal-label">Password</label>
+                    <input class="modal-input" type="password" id="signupPassword" placeholder="Min. 6 characters"
+                        onkeydown="if(event.key==='Enter')handleSignUp()" />
+                </div>
+                <button type="button" class="modal-submit" id="signupBtn" onclick="handleSignUp()"><span>Create Account
+                        →</span></button>
+                <div class="modal-divider"><span>or</span></div>
+                <button type="button" class="google-btn" onclick="handleGoogleAuth(this)">
+                    <svg width="16" height="16">
+                        <use href="#icon-google" />
+                    </svg>
+                    Continue with Google
+                </button>
+                <div class="modal-msg" id="signupMsg"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upgrade Modal (invite code) -->
+    <div class="modal-overlay" id="pricingModal">
+        <div class="modal" style="max-width: 440px;">
+            <button class="modal-close" onclick="closePricingModal()">✕</button>
+            <h2 class="modal-title">Upgrade to<br><em>Pro</em></h2>
+            <p class="modal-sub">Get unlimited pitch generations for 30 days. DM us on X or Telegram to get a code.</p>
+
+            <div
+                style="background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;">
+                <div
+                    style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem;">
+                    What you get</div>
+                <ul style="list-style:none;font-size:0.85rem;color:var(--white);line-height:2;">
+                    <li>✓ Unlimited pitch generations</li>
+                    <li>✓ BD / Partnership mode</li>
+                    <li>✓ All niche packs included</li>
+                    <li>✓ Save & sync pitch history</li>
+                </ul>
+            </div>
+
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:1rem;text-align:center;">Already have a code?
+                Redeem it in Dashboard → Settings.</div>
+            <a href="https://x.com/heistruthx" target="_blank" rel="noreferrer" class="modal-submit"
+                style="display:block;text-align:center;text-decoration:none;"><span>DM us on X →</span></a>
+            <div class="modal-msg" id="pricingMsg" style="margin-top:1rem;"></div>
+        </div>
+    </div>
+
+
+
+    <!-- User Dashboard Modal -->
+    <div class="modal-overlay" id="dashboardModal">
+        <div class="modal dashboard-modal"
+            style="max-width: 900px; width: 95%; height: 85vh; padding: 0; display: flex; flex-direction: row; align-items: stretch; overflow: hidden;">
+            <button class="modal-close" style="z-index: 10; top: 1rem; right: 1rem;"
+                onclick="closeDashboard()">✕</button>
+
+            <!-- Dashboard Sidebar -->
+            <div class="dashboard-sidebar">
+                <div class="dashboard-title">Dashboard</div>
+                <div class="dashboard-nav">
+                    <button class="dash-tab active" id="tabDashProfile"
+                        onclick="switchDashboardTab('profile')">Profile</button>
+                    <button class="dash-tab" id="tabDashHistory" onclick="switchDashboardTab('history')">Chat
+                        History</button>
+                    <button class="dash-tab" id="tabDashBilling"
+                        onclick="switchDashboardTab('billing')">Billing</button>
+                    <button class="dash-tab" id="tabDashPacks" onclick="switchDashboardTab('packs')">My Packs</button>
+                    <button class="dash-tab" id="tabDashSettings"
+                        onclick="switchDashboardTab('settings')">Settings</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Content Area -->
+            <div class="dashboard-main" style="flex:1; padding: 2.5rem; overflow-y: auto; position: relative;">
+
+                <!-- Profile Tab -->
+                <div class="dash-content" id="dashContentProfile">
+                    <h3 class="dash-section-title">Your Profile</h3>
+
+                    <div class="profile-avatar-section">
+                        <div class="avatar-preview" id="avatarPreview">U</div>
+                        <div class="avatar-upload-info">
+                            <label for="avatarUpload" class="upload-btn">Upload New Picture</label>
+                            <input type="file" id="avatarUpload" accept="image/png, image/jpeg, image/gif"
+                                style="display:none;" onchange="handleAvatarSelect(event)">
+                            <div class="upload-hint">JPG, GIF or PNG. 1MB max.</div>
+                        </div>
+                    </div>
+
+                    <div class="profile-form">
+                        <div class="modal-field" style="margin-bottom:1rem;">
+                            <label class="modal-label">Full Name</label>
+                            <input class="modal-input" type="text" id="profileNameInput"
+                                placeholder="Enter your full name">
+                            <div class="name-cooldown-info" id="nameCooldownInfo">You can only change your name once
+                                every 30 days.</div>
+                        </div>
+                        <button class="modal-submit" id="saveProfileBtn" onclick="saveProfile()"
+                            style="width:auto; padding: 0.8rem 1.5rem;"><span>Save Changes</span></button>
+                    </div>
+                </div>
+
+                <!-- History Tab -->
+                <div class="dash-content hidden" id="dashContentHistory">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+                        <h3 class="dash-section-title" style="margin:0;">Chat History</h3>
+                        <button class="new-chat-btn" style="width:auto;margin:0;padding:0.5rem 1rem;"
+                            onclick="startNewSession();closeDashboard()">+ New Session</button>
+                    </div>
+                    <div class="history-list" id="dashboardHistoryList"
+                        style="flex:1;overflow-y:auto;padding-right:0.5rem;">
+                        <div class="history-empty">Sign in to save and view your past sessions.</div>
+                    </div>
+                </div>
+
+                <!-- My Packs Tab -->
+                <div class="dash-content hidden" id="dashContentPacks">
+                    <h3 class="dash-section-title">Your Niche Packs</h3>
+                    <p
+                        style="font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;font-family:'Inter',sans-serif;">
+                        Premium outreach strategies & templates unlocked for your account.</p>
+
+                    <div id="packsContainer">
+                        <div class="history-empty" id="emptyPacksMsg">You haven't unlocked any niche packs yet.</div>
+
+                        <!-- Web3 Builder Pack Content -->
+                        <div class="pack-card hidden" id="contentPackWeb3"
+                            style="border:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem;border-radius:12px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 24px rgba(0,0,0,0.2);">
+                            <div
+                                style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--white);font-weight:700;font-size:1.2rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem;">
+                                <span style="color:var(--acid)">✦</span> Web3 Builder Pack
+                            </div>
+                            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1.5rem;">Specialized tactics for
+                                reaching out to DeFi protocols, infrastructure teams, and serious builders.</p>
+
+                            <h4 style="color:var(--white);font-size:0.9rem;margin-bottom:0.5rem;">Key Tactics:</h4>
+                            <ul
+                                style="list-style:none;margin-bottom:1.5rem;font-size:0.8rem;color:var(--muted);line-height:1.6;padding-left:1rem;border-left:1px solid var(--border);">
+                                <li style="margin-bottom:0.4rem;"><strong>Talk about Traction:</strong> Builders care
+                                    about real users and volume. Skip the marketing intro and go straight to numbers.
+                                </li>
+                                <li style="margin-bottom:0.4rem;"><strong>Get Technical Early:</strong> Show you
+                                    actually
+                                    looked at what they built. Mention a specific line of code, contract, or app
+                                    feature.</li>
+                                <li style="margin-bottom:0.4rem;"><strong>Fix a Blindspot:</strong> Position yourself as
+                                    someone who sees a missing piece they don't have time to build themselves.
+                                </li>
+                            </ul>
+
+                            <h4 style="color:var(--white);font-size:0.9rem;margin-bottom:0.5rem;">Copy-Paste Template:
+                            </h4>
+                            <textarea id="templateWeb3" readonly
+                                style="width:100%;border-radius:8px;background:rgba(17,24,39,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:1rem;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.5;resize:none;outline:none;box-sizing:border-box;min-height:165px;"></textarea>
+                            <button onclick="copyTemplate('templateWeb3', this)"
+                                style="margin-top:0.5rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;cursor:pointer;transition:all 0.2s;">
+                                Copy Template
+                            </button>
+                        </div>
+
+                        <!-- Founder Pack Content -->
+                        <div class="pack-card hidden" id="contentPackFounder"
+                            style="border:1px solid var(--border);padding:1.5rem;border-radius:12px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 24px rgba(0,0,0,0.2);">
+                            <div
+                                style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--white);font-weight:700;font-size:1.2rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem;">
+                                <span style="color:var(--acid)">✦</span> Cold DM Founder Pack
+                            </div>
+                            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1.5rem;">High-level outreach
+                                designed to get responses from busy Web3 founders and executives.</p>
+
+                            <h4 style="color:var(--white);font-size:0.9rem;margin-bottom:0.5rem;">Key Tactics:</h4>
+                            <ul
+                                style="list-style:none;margin-bottom:1.5rem;font-size:0.8rem;color:var(--muted);line-height:1.6;padding-left:1rem;border-left:1px solid var(--border);">
+                                <li style="margin-bottom:0.4rem;"><strong>Get to the Point:</strong> Keep it short.
+                                    Founders ignore long paragraphs. 4 sentences max.</li>
+                                <li style="margin-bottom:0.4rem;"><strong>Sell a Cure, Not a Vitamin:</strong> Find a
+                                    boring, frustrating problem they hate dealing with, and offer to take it.</li>
+                                <li style="margin-bottom:0.4rem;"><strong>Low Effort Ask:</strong> Don't ask for a call
+                                    yet. End with a simple question that only requires a "yes" or "sure".</li>
+                            </ul>
+
+                            <h4 style="color:var(--white);font-size:0.9rem;margin-bottom:0.5rem;">Copy-Paste Template:
+                            </h4>
+                            <textarea id="templateFounder" readonly
+                                style="width:100%;border-radius:8px;background:rgba(17,24,39,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:1rem;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.5;resize:none;outline:none;box-sizing:border-box;min-height:165px;"></textarea>
+                            <button onclick="copyTemplate('templateFounder', this)"
+                                style="margin-top:0.5rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;cursor:pointer;transition:all 0.2s;">
+                                Copy Template
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Billing Tab -->
+                <div class="dash-content hidden" id="dashContentBilling">
+                    <h3 class="dash-section-title">Pro Subscription</h3>
+                    <div class="settings-card">
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-name">Status</div>
+                                <div class="setting-val" id="billingStatusVal" style="color:var(--muted);">Free</div>
+                            </div>
+                        </div>
+                        <div class="setting-row" style="border-bottom:none;">
+                            <div class="setting-info">
+                                <div class="setting-name">Pro Expires</div>
+                                <div class="setting-val" id="billingExpiryVal" style="color:var(--muted);">—</div>
+                            </div>
+                            <button class="auth-btn" style="color:var(--acid);border-color:var(--acid);"
+                                onclick="closeDashboard();openPricingModal()">Get Pro</button>
+                        </div>
+                    </div>
+                    <p style="font-size:0.75rem;color:var(--muted);margin-top:1.5rem;line-height:1.6;">To renew or
+                        upgrade, DM us on <a href="https://x.com/heistruthx" target="_blank"
+                            style="color:var(--accent);">X</a> and we'll send you a new code.</p>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="dash-content hidden" id="dashContentSettings">
+                    <h3 class="dash-section-title">Subscription & Limits</h3>
+                    <div class="settings-card">
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-name">Current Tier</div>
+                                <div class="setting-val" id="settingsTierVal">Free</div>
+                            </div>
+                            <button class="auth-btn" style="color:var(--acid);border-color:var(--acid);"
+                                onclick="closeDashboard();openPricingModal()">Upgrade</button>
+                        </div>
+                        <div class="setting-row" style="border-bottom:none;">
+                            <div class="setting-info">
+                                <div class="setting-name">Available Credits</div>
+                                <div class="setting-val" id="settingsCreditsVal">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="dash-section-title" style="margin-top:2rem;">Redeem Code</h3>
+                    <div class="code-redeem-row">
+                        <input class="modal-input" type="text" id="adminCodeInput" placeholder="Enter activation code"
+                            style="flex:1;" />
+                        <button class="auth-btn" id="adminCodeBtn" style="color:var(--acid);border-color:var(--acid);"
+                            onclick="redeemAdminCode()">Redeem</button>
+                    </div>
+                    <div class="admin-code-msg" id="adminCodeMsg" style="display:none;"></div>
+
+                    <!-- Admin only: Generate Code panel -->
+                    <div id="adminGenPanel" style="display:none; margin-top:2rem;">
+                        <h3 class="dash-section-title">Generate Invite Code <span
+                                style="font-size:0.6rem;color:var(--acid);font-weight:600;vertical-align:middle;margin-left:0.4rem;">ADMIN</span>
+                        </h3>
+                        <div style="display:flex;gap:0.6rem;align-items:center;margin-bottom:0.75rem;">
+                            <select id="genDuration" class="modal-input" style="flex:0 0 auto;width:130px;">
+                                <option value="30">30 days</option>
+                                <option value="7">7 days</option>
+                                <option value="90">90 days</option>
+                                <option value="365">1 year</option>
+                            </select>
+                            <button class="auth-btn" id="genCodeBtn"
+                                style="color:var(--acid);border-color:var(--acid);white-space:nowrap;"
+                                onclick="generateInviteCode()">Generate Code</button>
+                        </div>
+                        <div id="genCodeResult"
+                            style="display:none;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:1rem;text-align:center;cursor:pointer;"
+                            onclick="copyGenCode(this)">
+                            <div
+                                style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem;">
+                                One-time code (click to copy)</div>
+                            <div id="genCodeText"
+                                style="font-family:'DM Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--acid);letter-spacing:0.15em;">
+                            </div>
+                            <div id="genCodeExpiry" style="font-size:0.65rem;color:var(--muted);margin-top:0.4rem;">
+                            </div>
+                        </div>
+                        <div id="genCodeMsg"
+                            style="display:none;margin-top:0.5rem;font-size:0.75rem;color:var(--muted);"></div>
+                    </div>
+
+                    <h3 class="dash-section-title" style="margin-top:2rem;">Account</h3>
+                    <button class="dropdown-item danger" style="width:auto;margin-top:0.5rem;padding:0.75rem 1rem;"
+                        onclick="handleSignOut()">↩ Sign Out</button>
+                </div>
+            </div>
+
+            <!-- Loading overlay for dashboard actions -->
+            <div class="dash-loading-overlay" id="dashLoading"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="PitchProtocol" class="logo-icon">Pitch<span>Protocol</span>
+        </div>
+        <div class="header-right">
+            <div id="walletArea" style="display:none; align-items:center; gap:0.5rem;">
+                <div class="badge" id="creditBadge" style="color:var(--acid); border-color:var(--acid);">3 Credits
+                </div>
+                <button class="auth-btn" style="color:var(--acid); border-color:var(--acid);"
+                    onclick="openPricingModal()">Upgrade</button>
+            </div>
+            <div id="authArea"><button class="auth-btn" onclick="openAuthModal()">Sign In</button></div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main>
+        <h1 class="headline" id="mainHeadline">Make them<br><em>need you.</em></h1>
+        <p class="sub" id="mainSub">Paste any Web3 project's X account. Tell us your niche. Get a pitch that makes them
+            want to bring you on — not just another DM they ignore.</p>
+
+        <!-- Mode Toggle -->
+        <div id="modeLabel">I'm reaching out to</div>
+        <div class="mode-toggle" id="modeToggle">
+            <div class="mode-slider"></div>
+            <button class="mode-btn active" id="btnHire" onclick="setMode('hire')">Get Hired</button>
+            <button class="mode-btn" id="btnBD" onclick="setMode('bd')">BD / Partnership</button>
+        </div>
+
+        <div class="form-block reveal">
+            <!-- GET HIRED fields -->
+            <div class="hired-fields" id="hiredFields">
+                <div class="field">
+                    <label>X / Twitter Project Link</label>
+                    <input type="url" id="xLink" placeholder="https://x.com/projecthandle" />
+                </div>
+                <div class="field">
+                    <label>What They Do <span style="color:var(--accent);font-size:0.7em;">*required</span></label>
+                    <textarea id="targetDesc"
+                        placeholder="e.g. They're a DEX aggregator on Solana with $200M daily volume..."></textarea>
+                </div>
+                <div class="field">
+                    <label>Your Niche / Skills</label>
+                    <textarea id="niche"
+                        placeholder="e.g. DeFi growth marketer, 3 years building communities for early-stage protocols..."></textarea>
+                </div>
+            </div>
+
+            <!-- BD fields -->
+            <div class="bd-fields" id="bdFields">
+                <div class="field-group">
+                    <div class="field-group-label">Your Project</div>
+                    <div class="field">
+                        <label>Your Project's X Link</label>
+                        <input type="url" id="myProjectLink" placeholder="https://x.com/yourproject" />
+                    </div>
+                    <div class="field">
+                        <label>What Your Project Does</label>
+                        <textarea id="myProjectDesc"
+                            placeholder="e.g. We're a DeFi yield aggregator on Base — $4M TVL, growing 30% MoM..."></textarea>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <div class="field-group-label">Their Project</div>
+                    <div class="field">
+                        <label>Target Project's X Link</label>
+                        <input type="url" id="theirProjectLink" placeholder="https://x.com/targetproject" />
+                    </div>
+                    <div class="field">
+                        <label>What They Do (as you understand it)</label>
+                        <textarea id="theirProjectDesc"
+                            placeholder="e.g. They're a DEX aggregator on Base with strong routing infrastructure..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <button class="generate-btn" id="generateBtn" onclick="generatePitch()">
+                <div class="spinner" id="spinner"></div>
+                <span id="btnText">Generate Pitch →</span>
+            </button>
+            <div class="error-msg" id="errorMsg"></div>
+        </div>
+
+        <!-- Glowing section divider (shown when output appears) -->
+        <div class="section-divider" id="outputDivider" style="display:none;"></div>
+
+        <!-- Project Snapshot -->
+        <div class="snapshot-wrap" id="snapshotWrap">
+            <div class="section-label" id="snapshotLabel">Project Snapshot</div>
+            <div id="snapshotContainer"></div>
+        </div>
+
+        <!-- Pitch Output -->
+        <div class="output-wrap" id="outputWrap">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+                <div
+                    style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:0.8rem;flex:1;">
+                    Your Pitch
+                    <span style="flex:1;height:1px;background:var(--border);display:block;"></span>
+                </div>
+                <button id="startOverBtn" onclick="clearAll()"
+                    style="margin-left:1rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:5px 14px;cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0;">✕
+                    Start Over</button>
+            </div>
+            <div class="pitch-card">
+                <button class="copy-btn" onclick="copyPitch()">Copy</button>
+                <div id="pitchContent"></div>
+            </div>
+        </div>
+
+        <!-- Roadmap -->
+        <div class="followup-wrap" id="followupWrap">
+            <div class="section-label">Execution Roadmap</div>
+            <div id="stepsContainer">
+                <div class="steps-loading">
+                    <div class="steps-spinner"></div>Building your roadmap...
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chat FAB -->
+    <button class="chat-fab" id="chatFab" onclick="toggleChat()">
+        <svg class="chat-icon" viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+        </svg>
+        <svg class="close-icon" viewBox="0 0 24 24">
+            <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+        </svg>
+    </button>
+
+    <!-- Chat Panel -->
+    <div class="chat-panel" id="chatPanel">
+        <div class="chat-panel-header">
+            <div class="chat-panel-title">Ask Anything <span>// pitch advisor</span></div>
+            <div class="chat-context-badge" id="chatContextBadge">pitch loaded</div>
+        </div>
+        <div class="chat-save-indicator" id="chatSaveIndicator">
+            <div class="save-dot"></div> Saving to history
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg ai">
+                <div class="chat-msg-role">Advisor</div>
+                <div class="chat-bubble">Hey — I'm your pitch advisor. Generate a pitch first and I'll have full
+                    context. Ask me anything about outreach, follow-ups, how to handle no replies, all of it.</div>
+            </div>
+        </div>
+        <div class="chat-suggestions">
+            <div class="chat-pill" onclick="askSuggestion('What if they don\'t reply after 3 days?')">No reply?
+            </div>
+            <div class="chat-pill" onclick="askSuggestion('How do I make my DM stand out from others?')">Stand out
+            </div>
+            <div class="chat-pill" onclick="askSuggestion('What mistakes should I avoid when pitching?')">Avoid
+                mistakes
+            </div>
+            <div class="chat-pill" onclick="askSuggestion('How do I build rapport before sending the pitch?')">Build
+                rapport</div>
+        </div>
+        <div class="chat-input-row">
+            <input class="chat-input" id="chatInput" type="text" placeholder="Ask a question..."
+                onkeydown="if(event.key==='Enter')sendChat()" />
+            <button class="chat-send-btn" id="chatSendBtn" onclick="sendChat()">Send →</button>
+        </div>
+    </div>
+
+
+    <!-- Scripts: loaded at end of body so DOM is fully ready -->
+    <script src="supabase.js?v=1" defer></script>
+    <script src="script.js?v=2" defer></script>
+
+    <!-- Scroll reveal -->
+    <script>
+        (function () {
+            const els = document.querySelectorAll('.reveal');
+            if (!els.length) return;
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+            }, { threshold: 0.12 });
+            els.forEach(el => io.observe(el));
+        })();
+    </script>
+</body>
+
+</html>
