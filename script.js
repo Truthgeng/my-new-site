@@ -8,8 +8,7 @@ const sb = supabase.createClient(
         auth: {
             detectSessionInUrl: true,
             persistSession: true,
-            autoRefreshToken: true,
-            storageKey: 'pitchprotocol-auth'
+            autoRefreshToken: true
         }
     }
 );
