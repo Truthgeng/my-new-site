@@ -1631,19 +1631,25 @@ Keep it short and easy to read.No buzzwords, no "great question!" openers.`;
     document.getElementById('chatSendBtn').disabled = false;
     document.getElementById('chatInput').focus();
 }
-// On page load, Supabase's onAuthStateChange fires INITIAL_SESSION automatically.
-// This DOMContentLoaded just ensures the UI updates after that event settles,
-// acting as a safety net in case the event fires before the DOM is fully ready.
-document.addEventListener('DOMContentLoaded', () => {
-    // Give onAuthStateChange time to fire and resolve profileLoadPromise,
-    // then sync the UI once more to be safe.
-    setTimeout(async () => {
-        try {
-            if (profileLoadPromise) await profileLoadPromise;
-        } catch (e) {
-            console.warn('[Init] profileLoadPromise failed:', e);
+// Page-load initializer: fetch session from localStorage and update UI.
+// Both scripts are loaded with `defer`, so by the time this runs the DOM
+// is ready and Supabase is initialized. We call getSession() directly
+// instead of relying on a timeout, which was racing with onAuthStateChange.
+window.addEventListener('load', async () => {
+    try {
+        const { data: { session } } = await sb.auth.getSession();
+        if (session?.user) {
+            currentUser = session.user;
+            // onAuthStateChange (INITIAL_SESSION) may have already set profileLoadPromise
+            // or may fire shortly after — wait for it if it exists
+            if (profileLoadPromise) {
+                await profileLoadPromise.catch(e => console.warn('[Init] Profile load error:', e));
+            }
         }
-        updateAuthUI();
-    }, 300);
+    } catch (e) {
+        console.warn('[Init] getSession failed:', e);
+    }
+    updateAuthUI();
 });
+
 
