@@ -8,10 +8,7 @@ const sb = supabase.createClient(
         auth: {
             detectSessionInUrl: true,
             persistSession: true,
-            autoRefreshToken: true,
-            // MetaMask's SES removes navigator.locks which Supabase uses for lock management.
-            // This custom lock function bypasses navigator.locks entirely, using simple async/await.
-            lock: async (_name, _acquireTimeout, fn) => await fn()
+            autoRefreshToken: true
         }
     }
 );
@@ -457,16 +454,8 @@ async function redeemAdminCode() {
     msgEl.style.display = 'none';
 
     try {
-        let session = (await sb.auth.getSession()).data.session;
-        if (!session) throw new Error('Please sign in first.');
-
-        // Force-refresh if token is near expiry
-        const expiresAt = session.expires_at ? session.expires_at * 1000 : 0;
-        if (Date.now() >= expiresAt - 60000) {
-            const { data, error: refreshErr } = await sb.auth.refreshSession();
-            if (refreshErr || !data.session) throw new Error('Session expired. Please sign out and sign back in.');
-            session = data.session;
-        }
+        const { data: { session }, error: sessionError } = await sb.auth.getSession();
+        if (sessionError || !session) throw new Error('Please sign in first.');
 
         const res = await fetch(`${SUPABASE_URL}/functions/v1/redeem-admin-code`, {
             method: 'POST',
@@ -515,18 +504,8 @@ async function generateInviteCode() {
     msgEl.style.display = 'none';
 
     try {
-        // Force-refresh the session to guarantee a fresh, non-expired access_token.
-        // getSession() can return a cached/expired token which Supabase gateway rejects with 401.
-        let session = (await sb.auth.getSession()).data.session;
-        if (!session) throw new Error('Please sign in first.');
-
-        // If token is within 60 seconds of expiry (or already expired), force a refresh
-        const expiresAt = session.expires_at ? session.expires_at * 1000 : 0;
-        if (Date.now() >= expiresAt - 60000) {
-            const { data, error: refreshErr } = await sb.auth.refreshSession();
-            if (refreshErr || !data.session) throw new Error('Session expired. Please sign out and sign back in.');
-            session = data.session;
-        }
+        const { data: { session }, error: sessionError } = await sb.auth.getSession();
+        if (sessionError || !session) throw new Error('Please sign in first.');
 
         console.log('[GenCode] Calling generate-admin-code with user:', session.user?.email);
 
@@ -1652,3 +1631,19 @@ Keep it short and easy to read.No buzzwords, no "great question!" openers.`;
     document.getElementById('chatSendBtn').disabled = false;
     document.getElementById('chatInput').focus();
 }
+// On page load, Supabase's onAuthStateChange fires INITIAL_SESSION automatically.
+// This DOMContentLoaded just ensures the UI updates after that event settles,
+// acting as a safety net in case the event fires before the DOM is fully ready.
+document.addEventListener('DOMContentLoaded', () => {
+    // Give onAuthStateChange time to fire and resolve profileLoadPromise,
+    // then sync the UI once more to be safe.
+    setTimeout(async () => {
+        try {
+            if (profileLoadPromise) await profileLoadPromise;
+        } catch (e) {
+            console.warn('[Init] profileLoadPromise failed:', e);
+        }
+        updateAuthUI();
+    }, 300);
+});
+

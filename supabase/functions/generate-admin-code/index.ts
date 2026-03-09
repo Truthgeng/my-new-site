@@ -71,8 +71,8 @@ serve(async (req) => {
         const codeHash = Array.from(new Uint8Array(hashBuf))
             .map(b => b.toString(16).padStart(2, "0")).join("");
 
-        // Store (expires in 24 hours — enough time to DM the code)
-        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+        // Store (expires in 7 days — plenty of time to share and redeem)
+        const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
 
         const { error: insertErr } = await db.from("admin_codes").insert({
             code_hash: codeHash,

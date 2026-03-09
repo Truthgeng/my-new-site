@@ -2007,6 +2007,7 @@ textarea {
         width: calc(100vw - 2rem);
         right: 1rem;
         bottom: 6rem;
+        max-height: calc(100vh - 8rem);
     }
 
     .chat-fab {
@@ -2014,8 +2015,52 @@ textarea {
         right: 1.25rem;
     }
 
+    .dashboard-modal {
+        flex-direction: column !important;
+        height: 90vh !important;
+    }
+
     .dashboard-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 0.75rem 0;
+        flex-shrink: 0;
+    }
+
+    .dashboard-title {
         display: none;
+    }
+
+    .dashboard-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 0 1rem;
+        gap: 0.5rem;
+    }
+
+    .dashboard-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .dash-tab {
+        padding: 0.6rem 1rem;
+        border-left: none;
+        border-bottom: 2px solid transparent;
+        white-space: nowrap;
+        border-radius: 6px;
+    }
+
+    .dash-tab.active {
+        border-left-color: transparent;
+        border-bottom-color: var(--accent);
+        background: rgba(96, 165, 250, 0.06);
+    }
+
+    .dashboard-main {
+        padding: 1.25rem !important;
+        overflow-y: auto;
+        flex: 1 1 auto;
     }
 
     .step-item {
