@@ -1016,6 +1016,9 @@ CRITICAL TONE RULES FOR STAGE 4 AND 5:
 - Express interest with quiet confidence and authentic detail. Do not oversell. Do not beg.
 - Mix short and long paragraphs. Let it breathe. Conversational, authentic, and direct.
 
+- NO SIGN OFFS. NEVER use "Thanks," "Best," or sign off with a name. The DM must end immediately after the final sentence.
+- DYNAMIC CLOSING: Always end the pitch with a punchy, context-specific Call to Action (CTA). For example, use "Let's cook!!!" if it's an aggressive builder pitch, or "Open for a quick conversation?" if it's a more strategic/advisory pitch. Match the CTA to the vibe of the pitch.
+
 EXTREME BANNED WORD LIST - Do not use these under any circumstance:
 Innovative, cutting-edge, revolutionary, disruptive, disrupting, disruption, next-generation, state-of-the-art, game-changing, changing the game, groundbreaking, transformative, industry-leading,
 Strategic, synergy, partnership, value proposition, optimize, streamline, leverage, facilitate, ecosystem, solutions-oriented, scalability, paramount,
@@ -1036,10 +1039,7 @@ My approach to Web3 is hands-on and high-agency: I proactively source opportunit
 
 I have a few specific ideas to help [Project's core goal] and would love to bring this execution to your ecosystem. 
 
-Let's cook!!!
-
-Thanks,
-[Sign-off Name]"
+[Dynamic Contextual CTA, e.g. "Let's cook!!!" or "Open to a quick conversation?"]"
 --------------------------------
 
 Stage 1. Clarify Your Ask
