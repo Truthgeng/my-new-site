@@ -473,7 +473,7 @@ async function redeemAdminCode() {
         const { data: { session }, error: sessionError } = await sb.auth.getSession();
         if (sessionError || !session) throw new Error('Please sign in first.');
 
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/redeem-admin-code`, {
+        let res = await fetch(`${SUPABASE_URL}/functions/v1/redeem-admin-code`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -481,6 +481,20 @@ async function redeemAdminCode() {
             },
             body: JSON.stringify({ code })
         });
+
+        if (res.status === 401) {
+            const { data: { session: newSession }, error: refreshErr } = await sb.auth.refreshSession();
+            if (refreshErr || !newSession?.access_token) throw new Error("Session expired. Please sign in again.");
+
+            res = await fetch(`${SUPABASE_URL}/functions/v1/redeem-admin-code`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${newSession.access_token}`
+                },
+                body: JSON.stringify({ code })
+            });
+        }
 
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Redemption failed.');
@@ -1001,19 +1015,19 @@ CRITICAL TONE RULES FOR STAGE 4 AND 5:
 - OPENER RULE (non-negotiable): Always start the DM with "Hey [Project Name] Team," — use the actual project name, NEVER the Twitter @handle. This is the ONLY acceptable opener.
 - NEVER use "been watching", "been following", "been tracking", "I've been following", "I've been watching", or any variation. Start with a sharp observation about THEM.
 - Replace ALL weak phrasing: NEVER say "I think", "I believe", "I might", "I could", "I think I can". Use "I can", "I will", "I have", "I do".
-- Express interest with quiet confidence. Do not oversell. Do not beg.
+- Write like a tired, highly competent human. Express interest with quiet confidence. Do not oversell. Do not beg.
 - Mix short and long sentences. Let it breathe. Conversational but intentional.
 - No rigid structure. No exaggerated claims. No vague promises.
+- NO ADJECTIVES OR ADVERBS IF POSSIBLE. Only nouns and verbs.
 
-FULL BANNED WORD LIST - never use any of these, not even variants:
+EXTREME BANNED WORD LIST - Do not use these under any circumstance:
 Innovative, cutting-edge, revolutionary, disruptive, disrupting, disruption, next-generation, state-of-the-art, game-changing, changing the game, groundbreaking, transformative, industry-leading,
-Strategic, synergy, partnership, value proposition, optimize, streamline, leverage, facilitate, ecosystem, solutions-oriented, scalability,
-Impressed by your work, excited to contribute, passionate about your mission, deeply resonate, inspired by your vision, committed to driving impact, dedication to excellence, pioneering, leading the way, you're changing the game, you are changing the game,
+Strategic, synergy, partnership, value proposition, optimize, streamline, leverage, facilitate, ecosystem, solutions-oriented, scalability, paramount,
+Impressed by your work, excited to contribute, passionate about your mission, deeply resonate, inspired by your vision, committed to driving impact, dedication to excellence, pioneering, leading the way,
 As an AI, as a language model, I was trained, my training data, based on my knowledge, I should note that, it's worth mentioning that, I'd like to highlight, allow me to,
 Furthermore, moreover, additionally, consequently, therefore, in conclusion, it is important to note, as a result, notably, to summarize,
 I am writing to express, I would like to take this opportunity, thank you for your time and consideration, I would be honored, I possess a diverse skill set, I am confident that I can contribute, I believe my experience aligns,
-It's not just about X it's about Y, from X to Y, at the end of the day, this highlights the importance of, as you may know, with that being said,
-could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, testament, aligns, reach out, touch base.
+could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, testament, aligns, reach out, touch base, embark, journey.
 
 --- GOLD STANDARD DM EXAMPLE ---
 Study this exact tone, brevity, and structure. This is the ONLY format acceptable for the final DM:

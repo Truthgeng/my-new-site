@@ -33,17 +33,25 @@ serve(async (req) => {
 
     try {
         const authHeader = req.headers.get("Authorization");
-        if (!authHeader) return json({ error: "Missing auth" }, 401, origin);
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return json({ error: "Missing auth" }, 401, origin);
+        }
+
+        const token = authHeader.replace("Bearer ", "").trim();
+        if (token.length < 100) {
+            return json({ error: "Invalid token" }, 401, origin);
+        }
 
         const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
         const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+        const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+
+        // Use regular client for RLS bypass logic
         const db = createClient(supabaseUrl, serviceKey);
 
-        // Verify JWT
-        const { data: { user }, error: authErr } = await createClient(
-            supabaseUrl,
-            Deno.env.get("SUPABASE_ANON_KEY")!
-        ).auth.getUser(authHeader.replace("Bearer ", ""));
+        // Verify JWT manually
+        const sbClient = createClient(supabaseUrl, anonKey);
+        const { data: { user }, error: authErr } = await sbClient.auth.getUser(token);
 
         if (authErr || !user) return json({ error: "Unauthorized" }, 401, origin);
 

@@ -6,3 +6,7 @@ verify_jwt = false
 [functions.generate-admin-code]
 verify_jwt = false
 
+
+[functions.redeem-admin-code]
+verify_jwt = false
+
