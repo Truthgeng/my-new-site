@@ -1010,15 +1010,11 @@ async function generatePitch() {
 Follow this exact 5-Stage framework to generate the pitch. You must output the entire thought process so the user can see *why* the pitch works, ending with the final DM.
 
 CRITICAL TONE RULES FOR STAGE 4 AND 5:
-- Write exactly like a human builder DMing another human. Warm, natural, grounded - like a text from someone who knows their craft.
-- No corporate stiffness. No AI-sounding phrases. No filler.
-- OPENER RULE (non-negotiable): Always start the DM with "Hey [Project Name] Team," — use the actual project name, NEVER the Twitter @handle. This is the ONLY acceptable opener.
-- NEVER use "been watching", "been following", "been tracking", "I've been following", "I've been watching", or any variation. Start with a sharp observation about THEM.
-- Replace ALL weak phrasing: NEVER say "I think", "I believe", "I might", "I could", "I think I can". Use "I can", "I will", "I have", "I do".
-- Write like a tired, highly competent human. Express interest with quiet confidence. Do not oversell. Do not beg.
-- Mix short and long sentences. Let it breathe. Conversational but intentional.
-- No rigid structure. No exaggerated claims. No vague promises.
-- NO ADJECTIVES OR ADVERBS IF POSSIBLE. Only nouns and verbs.
+- Write exactly like a human builder DMing another human. Warm, natural, grounded.
+- No corporate stiffness. No AI-sounding phrases. No filler or ambiguous words.
+- Tone should be hands-on and high-agency: proactive, energetic, and problem-solving.
+- Express interest with quiet confidence and authentic detail. Do not oversell. Do not beg.
+- Mix short and long paragraphs. Let it breathe. Conversational, authentic, and direct.
 
 EXTREME BANNED WORD LIST - Do not use these under any circumstance:
 Innovative, cutting-edge, revolutionary, disruptive, disrupting, disruption, next-generation, state-of-the-art, game-changing, changing the game, groundbreaking, transformative, industry-leading,
@@ -1026,19 +1022,32 @@ Strategic, synergy, partnership, value proposition, optimize, streamline, levera
 Impressed by your work, excited to contribute, passionate about your mission, deeply resonate, inspired by your vision, committed to driving impact, dedication to excellence, pioneering, leading the way,
 As an AI, as a language model, I was trained, my training data, based on my knowledge, I should note that, it's worth mentioning that, I'd like to highlight, allow me to,
 Furthermore, moreover, additionally, consequently, therefore, in conclusion, it is important to note, as a result, notably, to summarize,
-I am writing to express, I would like to take this opportunity, thank you for your time and consideration, I would be honored, I possess a diverse skill set, I am confident that I can contribute, I believe my experience aligns,
-could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, testament, aligns, reach out, touch base, embark, journey.
+I would like to take this opportunity, I would be honored, I possess a diverse skill set,
+could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, reach out, touch base, embark, journey.
 
---- GOLD STANDARD DM EXAMPLE ---
-Study this exact tone, brevity, and structure. This is the ONLY format acceptable for the final DM:
+--- GOLD STANDARD PITCH EXAMPLE ---
+Study this exact tone, authentic storytelling, and structure. This is the ONLY acceptable format and tone for the final DM:
 
-"Hey [Project Name] Team,
+"I’m writing to express my interest in the [Target Role] position at [Target Project Name].
 
-[Sharp, specific observation about their market position, product mechanic, or recent move - written in plain language, not about you watching them].
+Over the past [Timeframe] in Web3, I’ve had the privilege of [Specific high-level action, e.g., building, growing, and managing communities] for [Type of projects], both in early-stage environments and with established teams.
 
-I'm a [My Background/Niche] focused on [Specific tangible outcome]. I have a few ideas to help [Specific metric/goal they care about].
+My approach has always been hands-on and high-agency: I don’t wait for tasks to come to me, I proactively source opportunities to [Direct outcome 1], [Direct outcome 2] and [Direct outcome 3].
 
-Open to a quick conversation?"
+In my current role as a [Current/Past Role] at [Company], I [Concrete achievement/responsibility].
+
+I also [Side-initiative/Second concrete achievement], an initiative to [Goal of initiative], creating [Metric/Action], and running [Metric/Action] as well.
+
+This approach has helped us [Major outcome] without relying on [Common crutch/cliché approach]. This is a testament to the power of authentic, value-driven execution.
+
+I’m confident I can bring same mix of strategic thinking, creative execution, and genuine connection to [Target Project Name]. Your mission to [Project's core mechanic/goal from snapshot] aligns with me, and I’d love to help shape a vibrant, informed ecosystem around it.
+
+I would be excited to discuss how my experience and energy could contribute to [Target Project Name]'s growth overall.
+
+Let’s cook!!!
+
+Thanks for your time and consideration,
+[Sign-off Name]"
 --------------------------------
 
 Stage 1. Clarify Your Ask
@@ -1058,8 +1067,7 @@ Draft a highly human, natural message combining the context, value, and ask.
 
 Stage 5. Polish to DM Ready
 Final check: Read it aloud. Does it sound like a robot wrote it? If yes, rewrite it.
-CRITICAL: Use the GOLD STANDARD EXAMPLE as your blueprint. Adapt its pacing and structure to fit the user's niche and the target project. DO NOT copy the example verbatim - change the observation, background, and goals to match the actual inputs. Keep it extremely concise.
-DO NOT use em dashes anywhere in the DM. Use plain hyphens or commas instead.
+CRITICAL: Use the GOLD STANDARD EXAMPLE as your blueprint. Adapt its pacing and structure to fit the user's niche and the target project. DO NOT copy the example verbatim - change the timelines, actions, companies, and goals to match the actual inputs. Smooth, natural flow without ambiguous words.
 
 FORMAT YOUR RESPONSE EXACTLY LIKE THIS:
 
