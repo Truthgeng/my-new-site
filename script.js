@@ -150,16 +150,15 @@ sb.auth.onAuthStateChange(async (event, session) => {
                 lastLoadedUserId = currentUser.id;
 
                 profileLoadPromise = (async () => {
-                    // Upsert: create if not exist, return existing data if already there
-                    const { data: profile, error: upsertError } = await sb
+                    // Upsert: create if not exist. 
+                    // Do NOT use .select().single() here because if ignoreDuplicates is true 
+                    // and the row exists, Supabase returns 0 rows, which throws PGRST116.
+                    const { error: upsertError } = await sb
                         .from('user_profiles')
-                        .upsert({ id: currentUser.id }, { onConflict: 'id', ignoreDuplicates: true })
-                        .select()
-                        .single();
+                        .upsert({ id: currentUser.id }, { onConflict: 'id', ignoreDuplicates: true });
 
-                    if (upsertError && upsertError.code !== 'PGRST116') {
+                    if (upsertError) {
                         console.error("Profile upsert error:", upsertError);
-                        // Try a plain select as fallback
                     }
 
                     // Fetch the profile (guaranteed to exist after upsert)
