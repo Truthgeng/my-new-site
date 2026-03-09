@@ -1026,21 +1026,19 @@ I would like to take this opportunity, I would be honored, I possess a diverse s
 could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, reach out, touch base, embark, journey.
 
 --- GOLD STANDARD PITCH EXAMPLE ---
-Study this exact tone, authentic storytelling, and structure. This is the ONLY acceptable format and tone for the final DM:
+Study this exact tone, authentic storytelling, and structure. This is the ONLY acceptable format and tone for the final DM (do not make it longer than this):
 
-"I’m writing to express my interest in the [Target Role] position at [Target Project Name].
+"Hey [Target Project Name] Team,
 
-My approach to Web3 is hands-on and high-agency: I proactively source opportunities to [Direct outcome 1] and [Direct outcome 2] rather than waiting for tasks.
+Noticed [Specific observation about their current product mechanic or recent move].
 
-In my current role as [Current/Past Role] at [Company], I [Concrete achievement/responsibility]. I also [Side-initiative], which helped us [Major outcome] without relying on [Common crutch]. 
+My approach to Web3 is hands-on and high-agency: I proactively source opportunities to [Direct outcome 1] rather than waiting for tasks. I used this exact approach at [Past Company] to [Major concrete achievement] without relying on [Common crutch]. 
 
-I want to bring this same strategic execution to [Target Project Name]. Your mission to [Project's core mechanic from snapshot] aligns with me, and I’d love to help shape a vibrant ecosystem around it.
+I have a few specific ideas to help [Project's core goal] and would love to bring this execution to your ecosystem. 
 
-Excited to discuss how my energy could contribute to your growth entirely.
+Let's cook!!!
 
-Let’s cook!!!
-
-Thanks for your time,
+Thanks,
 [Sign-off Name]"
 --------------------------------
 
