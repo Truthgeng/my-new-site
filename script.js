@@ -1637,12 +1637,16 @@ Keep it short and easy to read.No buzzwords, no "great question!" openers.`;
 // wait for the profileLoadPromise that onAuthStateChange sets up.
 // This avoids any race between window events and async Supabase callbacks.
 (async function initAuth() {
+    console.log('[Init] initAuth started');
     try {
         const { data: { session }, error } = await sb.auth.getSession();
+        console.log('[Init] getSession returned:', { hasSession: !!session, hasUser: !!session?.user, error });
+
         if (error) {
-            console.warn('[Init] getSession error:', error);
+            console.error('[Init] getSession error:', error);
         }
         if (session?.user) {
+            console.log('[Init] User found in session:', session.user.email);
             currentUser = session.user;
             // Wait up to 3 seconds for onAuthStateChange to start the profile load
             let waited = 0;
@@ -1650,15 +1654,21 @@ Keep it short and easy to read.No buzzwords, no "great question!" openers.`;
                 await new Promise(r => setTimeout(r, 50));
                 waited += 50;
             }
+            console.log('[Init] Waited for profileLoadPromise:', waited, 'ms. Exists?', !!profileLoadPromise);
             if (profileLoadPromise) {
-                await profileLoadPromise.catch(e => console.warn('[Init] Profile load error:', e));
+                await profileLoadPromise.catch(e => console.error('[Init] Profile load error:', e));
+                console.log('[Init] profileLoadPromise resolved');
             }
+        } else {
+            console.warn('[Init] No user in session. LocalStorage keys:', Object.keys(localStorage));
         }
     } catch (e) {
-        console.warn('[Init] initAuth error:', e);
+        console.error('[Init] initAuth CRITICAL error:', e);
     }
+    console.log('[Init] Calling updateAuthUI() with currentUser:', !!currentUser);
     updateAuthUI();
 })();
+
 
 
 
