@@ -1631,25 +1631,34 @@ Keep it short and easy to read.No buzzwords, no "great question!" openers.`;
     document.getElementById('chatSendBtn').disabled = false;
     document.getElementById('chatInput').focus();
 }
-// Page-load initializer: fetch session from localStorage and update UI.
-// Both scripts are loaded with `defer`, so by the time this runs the DOM
-// is ready and Supabase is initialized. We call getSession() directly
-// instead of relying on a timeout, which was racing with onAuthStateChange.
-window.addEventListener('load', async () => {
+// ── Page-load auth init ──────────────────────────────────────────────────────
+// Scripts are `defer` so this runs after supabase.js + script.js are ready.
+// We directly call getSession() to restore session from localStorage, then
+// wait for the profileLoadPromise that onAuthStateChange sets up.
+// This avoids any race between window events and async Supabase callbacks.
+(async function initAuth() {
     try {
-        const { data: { session } } = await sb.auth.getSession();
+        const { data: { session }, error } = await sb.auth.getSession();
+        if (error) {
+            console.warn('[Init] getSession error:', error);
+        }
         if (session?.user) {
             currentUser = session.user;
-            // onAuthStateChange (INITIAL_SESSION) may have already set profileLoadPromise
-            // or may fire shortly after — wait for it if it exists
+            // Wait up to 3 seconds for onAuthStateChange to start the profile load
+            let waited = 0;
+            while (!profileLoadPromise && waited < 3000) {
+                await new Promise(r => setTimeout(r, 50));
+                waited += 50;
+            }
             if (profileLoadPromise) {
                 await profileLoadPromise.catch(e => console.warn('[Init] Profile load error:', e));
             }
         }
     } catch (e) {
-        console.warn('[Init] getSession failed:', e);
+        console.warn('[Init] initAuth error:', e);
     }
     updateAuthUI();
-});
+})();
+
 
 
