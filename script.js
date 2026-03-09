@@ -6,9 +6,11 @@ const sb = supabase.createClient(
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJxanZnc2l2d2hueWpuenBnbHJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1MTc3NTksImV4cCI6MjA4NzA5Mzc1OX0.NvRRo-vHoTpaeCWc53TgWFQmBKZq2qbrTdzIm_lDipA',
     {
         auth: {
+            flowType: 'pkce',
             detectSessionInUrl: true,
             persistSession: true,
-            autoRefreshToken: true
+            autoRefreshToken: true,
+            storageKey: 'pitchprotocol-auth'
         }
     }
 );
