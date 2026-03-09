@@ -1030,23 +1030,17 @@ Study this exact tone, authentic storytelling, and structure. This is the ONLY a
 
 "I’m writing to express my interest in the [Target Role] position at [Target Project Name].
 
-Over the past [Timeframe] in Web3, I’ve had the privilege of [Specific high-level action, e.g., building, growing, and managing communities] for [Type of projects], both in early-stage environments and with established teams.
+My approach to Web3 is hands-on and high-agency: I proactively source opportunities to [Direct outcome 1] and [Direct outcome 2] rather than waiting for tasks.
 
-My approach has always been hands-on and high-agency: I don’t wait for tasks to come to me, I proactively source opportunities to [Direct outcome 1], [Direct outcome 2] and [Direct outcome 3].
+In my current role as [Current/Past Role] at [Company], I [Concrete achievement/responsibility]. I also [Side-initiative], which helped us [Major outcome] without relying on [Common crutch]. 
 
-In my current role as a [Current/Past Role] at [Company], I [Concrete achievement/responsibility].
+I want to bring this same strategic execution to [Target Project Name]. Your mission to [Project's core mechanic from snapshot] aligns with me, and I’d love to help shape a vibrant ecosystem around it.
 
-I also [Side-initiative/Second concrete achievement], an initiative to [Goal of initiative], creating [Metric/Action], and running [Metric/Action] as well.
-
-This approach has helped us [Major outcome] without relying on [Common crutch/cliché approach]. This is a testament to the power of authentic, value-driven execution.
-
-I’m confident I can bring same mix of strategic thinking, creative execution, and genuine connection to [Target Project Name]. Your mission to [Project's core mechanic/goal from snapshot] aligns with me, and I’d love to help shape a vibrant, informed ecosystem around it.
-
-I would be excited to discuss how my experience and energy could contribute to [Target Project Name]'s growth overall.
+Excited to discuss how my energy could contribute to your growth entirely.
 
 Let’s cook!!!
 
-Thanks for your time and consideration,
+Thanks for your time,
 [Sign-off Name]"
 --------------------------------
 
