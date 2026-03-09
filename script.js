@@ -46,18 +46,37 @@ async function callAI(system, messages, maxTokens, modelOverride = null, isJson 
     }
 
     try {
-        const { data, error } = await sb.functions.invoke('ai-proxy', {
-            body: aiPayload
+        let res = await fetch(AI_PROXY_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify(aiPayload)
         });
 
-        if (error) {
-            // Show rate limit message clearly to user
-            if (error.status === 429 || (error.context && error.context.status === 429)) {
-                throw new Error('Daily pitch limit reached. Upgrade to Pro for unlimited pitches.');
-            }
-            throw new Error(`AI service error. Please try again.`);
+        // If the token expired right before the call, refresh it instantly and retry once
+        if (res.status === 401) {
+            const { data: { session: newSession }, error: refreshErr } = await sb.auth.refreshSession();
+            if (refreshErr || !newSession?.access_token) throw new Error("Session expired. Please sign in again.");
+
+            res = await fetch(AI_PROXY_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${newSession.access_token}`
+                },
+                body: JSON.stringify(aiPayload)
+            });
         }
 
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            if (res.status === 429) throw new Error('Daily pitch limit reached. Upgrade to Pro for unlimited pitches.');
+            throw new Error(errData.error || `AI service error (${res.status}). Please try again.`);
+        }
+
+        const data = await res.json();
         return data.content || '';
     } catch (e) {
         throw e;
@@ -506,14 +525,34 @@ async function generateInviteCode() {
 
         console.log('[GenCode] Calling generate-admin-code with user:', session.user?.email);
 
-        const { data, error: invokeError } = await sb.functions.invoke('generate-admin-code', {
-            body: { durationDays: duration }
+        let res = await fetch(`${SUPABASE_URL}/functions/v1/generate-admin-code`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({ durationDays: duration })
         });
 
-        if (invokeError) {
-            console.error('[GenCode] Response error:', invokeError);
-            throw new Error(`[${invokeError.status || 500}] ${invokeError.message || 'Error generating code'}`);
+        if (res.status === 401) {
+            const { data: { session: newSession }, error: refreshErr } = await sb.auth.refreshSession();
+            if (refreshErr || !newSession?.access_token) throw new Error("Session expired. Please sign in again.");
+
+            res = await fetch(`${SUPABASE_URL}/functions/v1/generate-admin-code`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${newSession.access_token}`
+                },
+                body: JSON.stringify({ durationDays: duration })
+            });
         }
+
+        console.log('[GenCode] Response status:', res.status);
+        const data = await res.json();
+        console.log('[GenCode] Response body:', JSON.stringify(data));
+
+        if (!res.ok) throw new Error(`[${res.status}] ${data.error || JSON.stringify(data)}`);
 
         const expiryText = `Expires ${new Date(data.expires_at).toLocaleString()} · ${data.duration_days} days Pro`;
         document.getElementById('genCodeText').textContent = data.code;
