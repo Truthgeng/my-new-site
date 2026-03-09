@@ -8,7 +8,10 @@ const sb = supabase.createClient(
         auth: {
             detectSessionInUrl: true,
             persistSession: true,
-            autoRefreshToken: true
+            autoRefreshToken: true,
+            // Wallet extensions (SES lockdown) remove navigator.locks.
+            // This custom lock function bypasses it to prevent 10s timeouts.
+            lock: async (_name, _acquireTimeout, fn) => await fn()
         }
     }
 );
