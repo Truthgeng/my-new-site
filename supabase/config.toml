@@ -1,1 +1,8 @@
 project_id = "bqjvgsivwhnyjnzpglrd"
+
+[functions.ai-proxy]
+verify_jwt = false
+
+[functions.generate-admin-code]
+verify_jwt = false
+

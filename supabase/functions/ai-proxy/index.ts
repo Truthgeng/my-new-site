@@ -8,6 +8,7 @@
  */
 
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 declare const Deno: { env: { get(key: string): string | undefined } };
 
@@ -50,16 +51,25 @@ serve(async (req: Request) => {
         return json({ error: "Method not allowed" }, 405, origin);
     }
 
-    // ── Auth: must have a valid Supabase session JWT ──
+    // ── Auth: manually verify the JWT since API Gateway verification is disabled ──
     const authHeader = req.headers.get("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return json({ error: "Unauthorized" }, 401, origin);
     }
 
     const token = authHeader.replace("Bearer ", "").trim();
-    // Supabase session JWTs are always > 100 chars; short tokens are anon/invalid
     if (token.length < 100) {
         return json({ error: "Invalid token" }, 401, origin);
+    }
+
+    // Validate JWT signature and expiration
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const sbClient = createClient(supabaseUrl, anonKey);
+    const { data: { user }, error: authErr } = await sbClient.auth.getUser(token);
+
+    if (authErr || !user) {
+        return json({ error: "Invalid JWT" }, 401, origin);
     }
 
     // ── Groq key (server-side only in Supabase secrets) ──
