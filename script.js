@@ -150,27 +150,29 @@ sb.auth.onAuthStateChange(async (event, session) => {
                 lastLoadedUserId = currentUser.id;
 
                 profileLoadPromise = (async () => {
-                    // Upsert: create if not exist. 
-                    // Do NOT use .select().single() here because if ignoreDuplicates is true 
-                    // and the row exists, Supabase returns 0 rows, which throws PGRST116.
-                    const { error: upsertError } = await sb
-                        .from('user_profiles')
-                        .upsert({ id: currentUser.id }, { onConflict: 'id', ignoreDuplicates: true });
-
-                    if (upsertError) {
-                        console.error("Profile upsert error:", upsertError);
-                    }
-
-                    // Fetch the profile (guaranteed to exist after upsert)
+                    // 1. First simply try to fetch the profile
                     let { data: finalProfile, error: fetchError } = await sb
                         .from('user_profiles')
                         .select('*')
                         .eq('id', currentUser.id)
                         .single();
 
-                    if (fetchError) {
-                        console.error("Error fetching profile after upsert:", fetchError);
-                        finalProfile = null;
+                    // 2. If it doesn't exist (PGRST116), create it cleanly
+                    if (fetchError && fetchError.code === 'PGRST116') {
+                        console.log("[Auth] Profile not found, creating new profile...");
+                        const { data: newProfile, error: insertError } = await sb
+                            .from('user_profiles')
+                            .insert([{ id: currentUser.id }])
+                            .select()
+                            .single();
+
+                        if (insertError) {
+                            console.error("[Auth] Failed to create profile:", insertError);
+                        } else {
+                            finalProfile = newProfile;
+                        }
+                    } else if (fetchError) {
+                        console.error("[Auth] Error fetching profile:", fetchError);
                     }
 
                     if (finalProfile) {
