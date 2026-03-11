@@ -1739,7 +1739,7 @@ function initTheme() {
     const savedTheme = localStorage.getItem('theme') || 'dark';
     const btn = document.getElementById('themeToggleBtn');
     if (btn) {
-        btn.textContent = savedTheme === 'light' ? '🌙' : '☀️';
+        btn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
     }
 }
 
@@ -1753,7 +1753,7 @@ function toggleTheme() {
     
     const btn = document.getElementById('themeToggleBtn');
     if (btn) {
-        btn.textContent = newTheme === 'light' ? '🌙' : '☀️';
+        btn.textContent = newTheme === 'light' ? '☀️' : '🌙';
     }
 }
 

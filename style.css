@@ -2293,32 +2293,43 @@ textarea {
 }
 /* ── Light Mode ────────────────────────────────────────────── */
 [data-theme="light"] {
-    --bg: #f8fafc;
-    --bg2: #f1f5f9;
+    --bg: #eff3f8;
+    --bg2: #e2e8f0;
     --bg3: #ffffff;
     --white: #0f172a;
-    --white-dim: rgba(15, 23, 42, 0.7);
-    --muted: rgba(71, 85, 105, 0.85);
+    --white-dim: rgba(15, 23, 42, 0.75);
+    --muted: rgba(71, 85, 105, 0.9);
     --accent: #2563eb;
     --accent-hi: #1d4ed8;
-    --glow: rgba(37, 99, 235, 0.15);
-    --glow-soft: rgba(37, 99, 235, 0.08);
-    --border: rgba(15, 23, 42, 0.12);
-    --border-hi: rgba(15, 23, 42, 0.25);
-    --glass: rgba(255, 255, 255, 0.75);
-    --glass-lite: rgba(15, 23, 42, 0.04);
+    --glow: rgba(37, 99, 235, 0.12);
+    --glow-soft: rgba(37, 99, 235, 0.06);
+    --border: rgba(15, 23, 42, 0.08); /* Softer borders */
+    --border-hi: rgba(15, 23, 42, 0.18);
+    --glass: rgba(255, 255, 255, 0.85);
+    --glass-lite: rgba(15, 23, 42, 0.03);
 }
 
 [data-theme="light"] body {
     background-image:
-        radial-gradient(ellipse 90% 55% at 50% -5%, rgba(37, 99, 235, 0.08) 0%, transparent 68%),
+        radial-gradient(ellipse 90% 55% at 50% -5%, rgba(37, 99, 235, 0.06) 0%, transparent 68%),
         radial-gradient(ellipse 50% 40% at 90% 90%, rgba(37, 99, 235, 0.04) 0%, transparent 60%),
-        radial-gradient(ellipse 35% 35% at 5% 75%, rgba(37, 99, 235, 0.03) 0%, transparent 55%);
+        radial-gradient(ellipse 35% 35% at 5% 75%, rgba(37, 99, 235, 0.02) 0%, transparent 55%);
 }
 
 [data-theme="light"] .mode-toggle,
 [data-theme="light"] .copy-btn {
-    background: rgba(15, 23, 42, 0.05);
+    background: rgba(15, 23, 42, 0.05); /* very light track */
+}
+
+/* Fix text that was hardcoded for dark mode */
+[data-theme="light"] .logo span {
+    -webkit-text-fill-color: rgba(15, 23, 42, 0.45);
+}
+
+[data-theme="light"] .mode-btn.active,
+[data-theme="light"] .modal-submit,
+[data-theme="light"] .user-avatar {
+    color: #ffffff; /* White text looks better on the blue gradient in light mode */
 }
 
 [data-theme="light"] .modal,
