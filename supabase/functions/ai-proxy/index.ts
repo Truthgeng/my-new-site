@@ -88,9 +88,14 @@ serve(async (req: Request) => {
 
     const isPro = profile.tier === "pro" && new Date(profile.pro_expires_at) > new Date();
 
-    if (!isPro && profile.credits <= 0) {
-        // Halt generation immediately. Inform the UI to show the Upgrade modal.
-        return json({ error: "Out of credits" }, 403, origin);
+    if (!isPro) {
+        // Use atomic RPC that checks, deducts, and handles 24h refresh in one locked transaction.
+        // This prevents race conditions where 3 parallel pitch calls all read credits > 0
+        // before any of them deducts, allowing generation past 0.
+        const { data: allowed, error: deductErr } = await db.rpc('try_deduct_credit', { p_user_id: user.id });
+        if (deductErr || !allowed) {
+            return json({ error: "Out of credits" }, 403, origin);
+        }
     }
 
     // ── Groq key (server-side only in Supabase secrets) ──
@@ -142,12 +147,6 @@ serve(async (req: Request) => {
 
         const data = await groqRes.json();
         const content = data.choices?.[0]?.message?.content ?? "";
-
-        // ── Success: Deduct Credit if not Pro ──
-        if (!isPro) {
-            // We use raw RPC or standard update. Standard update is fine since trigger protects client, not service role.
-            await db.rpc('increment_pitch_count', { user_id: user.id });
-        }
 
         return json({ content }, 200, origin);
 
