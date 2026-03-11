@@ -120,7 +120,7 @@ async function executePayment(type, amountUsdc) {
 
         m.style.background = 'rgba(96, 165, 250, 0.07)';
         m.innerHTML = `
-            🎉 <b>Payment Confirmed!</b><br><br>
+            <b>Payment Confirmed!</b><br><br>
             Your account has been upgraded. Refreshing...
             <br><a href="https://basescan.org/tx/${txHash}" target="_blank" style="color:var(--accent); font-size: 0.7rem; margin-top: 0.5rem; display: inline-block;">View on BaseScan →</a>
         `;
@@ -206,7 +206,7 @@ async function redeemAdminCode() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Redemption failed.');
 
-        msgEl.textContent = `✅ Pro activated until ${new Date(data.pro_expires_at).toLocaleDateString()}!`;
+        msgEl.textContent = `Pro activated until ${new Date(data.pro_expires_at).toLocaleDateString()}!`;
         msgEl.className = 'admin-code-msg success';
         msgEl.style.display = 'block';
         input.value = '';
@@ -253,7 +253,7 @@ async function loadBillingHistory() {
             const date = new Date(p.created_at).toLocaleDateString();
             const shortHash = p.tx_hash.slice(0, 8) + '...' + p.tx_hash.slice(-6);
             const statusClass = p.status === 'confirmed' ? 'status-confirmed' : 'status-pending';
-            const statusText = p.status === 'confirmed' ? '✅ Confirmed' : '⏳ Pending';
+            const statusText = p.status === 'confirmed' ? 'Confirmed' : 'Pending';
 
             return `<tr>
                 <td>${amount} USDC</td>

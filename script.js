@@ -268,8 +268,8 @@ sb.auth.onAuthStateChange(async (event, session) => {
         </button>
         <div class="user-dropdown" id="userDropdown">
           <div class="user-dropdown-header"><div class="user-email">${escHtml(displayEmail)}</div></div>
-          <button class="dropdown-item" onclick="openDashboard(); switchDashboardTab('profile'); closeDropdown()">⚙️ Dashboard Overview</button>
-          <button class="dropdown-item" onclick="startNewSession();closeDropdown()">✦ New Pitch Session</button>
+          <button class="dropdown-item" onclick="openDashboard(); switchDashboardTab('profile'); closeDropdown()">Dashboard Overview</button>
+          <button class="dropdown-item" onclick="startNewSession();closeDropdown()">New Pitch Session</button>
           <button class="dropdown-item danger" onclick="handleSignOut()">↩ Sign Out</button>
         </div>
       </div>`;
@@ -500,7 +500,7 @@ async function redeemAdminCode() {
         if (!res.ok) throw new Error(data.error || 'Redemption failed.');
 
         const until = new Date(data.pro_expires_at).toLocaleDateString();
-        msgEl.textContent = `✅ Pro activated until ${until}!`;
+        msgEl.textContent = `Pro activated until ${until}!`;
         msgEl.className = 'admin-code-msg success';
         msgEl.style.display = 'block';
         input.value = '';
@@ -591,7 +591,7 @@ function copyGenCode(el) {
     navigator.clipboard.writeText(code).then(() => {
         el.style.background = 'rgba(96,165,250,0.12)';
         const expiryEl = document.getElementById('genCodeExpiry');
-        expiryEl.textContent = '✅ Copied to clipboard!';
+        expiryEl.textContent = 'Copied to clipboard!';
         setTimeout(() => {
             el.style.background = '';
             expiryEl.textContent = expiryEl.dataset.expiry || '';
@@ -995,7 +995,7 @@ async function generatePitch() {
     if (accountType === 'personal') {
         document.getElementById('snapshotContainer').innerHTML = `
       <div class="snapshot-card" style="border-left-color:#ff9500;grid-template-columns:1fr;gap:1rem;">
-        <div class="snap-field full"><div class="snap-key" style="color:#ff9500;">⚠ Personal Account Detected</div>
+        <div class="snap-field full"><div class="snap-key" style="color:#ff9500;">Personal Account Detected</div>
           <div class="snap-val" style="margin-top:0.4rem;">This looks like a <strong style="color:var(--white)">personal X account</strong>. PitchProtocol needs the project's official X account.</div></div>
         <div class="snap-field full"><div class="snap-key" style="color:#ff9500;">What To Do</div>
           <div class="snap-val">Find the project's X handle and paste that instead. It typically looks like <span style="color:var(--acid)">x.com/ProjectName</span>.</div></div>
@@ -1556,7 +1556,7 @@ function renderPitch(text, targetHandle, context, mode, myHandle) {
             const contentText = escHtml(content);
 
             if (current.tag === '[DM READY]') {
-                const dmLabel = `<span class="dm-copy-btn" onclick="copyDmReady()" title="Copy DM to clipboard">📋 Copy DM</span>`;
+                const dmLabel = `<span class="dm-copy-btn" onclick="copyDmReady()" title="Copy DM to clipboard">Copy DM</span>`;
                 html += `<div class="pitch-section-label" style="display:flex;align-items:center;justify-content:space-between;color:var(--acid);">${labels[current.tag]}${dmLabel}</div><div class="pitch-text dm-ready-text" id="dmReadyText" style="background:rgba(200,255,0,0.04);border-left:2px solid var(--acid);padding:1rem 1.2rem;border-radius:8px;">${contentText.replace(/\n/g, '<br>')}</div>`;
             } else {
                 html += `<div class="pitch-section-label">${labels[current.tag]}</div><div class="pitch-text">${contentText.replace(/\n/g, '<br>')}</div>`;
@@ -1600,7 +1600,7 @@ function copyDmReady() {
     if (!el) return;
     navigator.clipboard.writeText(el.innerText.trim()).then(() => {
         const btn = document.querySelector('.dm-copy-btn');
-        if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = '📋 Copy DM', 2000); }
+        if (btn) { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy DM', 2000); }
     });
 }
 function setLoading(on) {
