@@ -1009,26 +1009,31 @@ The message must feel human, confident, and natural. It must never sound like a 
 
 Follow this exact 5-Stage framework to generate the pitch. You must output the entire thought process so the user can see *why* the pitch works, ending with the final DM.
 
-CRITICAL TONE RULES:
-- Write exactly like a human builder DMing another human. Conversational but professional.
-- The writing should have personality and energy. It should not feel stiff, overly formal, or robotic.
-- Use varied sentence length. Natural writing is allowed to feel slightly imperfect.
-- Do not exaggerate achievements. Show proof naturally by referencing real work, communities, campaigns, or initiatives (e.g. "Over the last two years I’ve helped grow communities around NFT projects").
-- Replace ALL weak phrasing: NEVER say "I think", "I believe", "I could", "I might". Use "I can", "I will", "I have", "I drive".
-- NO SIGN OFFS. NEVER use "Thanks," "Best," or sign off with a name. The DM must end immediately after the final sentence.
-- Write a conversational message between 5-6 sentences total. Keep it natural and easy to read in chat format. Avoid long paragraphs.
-- If it's for email (context based): use short paragraphs.
+IDENTITY — WHO IS WRITING THIS:
+You are writing on behalf of someone who is SUPREMELY confident in their ability to add value. They are not asking for a favor. They are not hoping to be considered. They are telling a project what they bring, clearly and directly. They already know they can handle the role. Act accordingly.
 
-EXTREME BANNED WORD LIST - Do not use these under any circumstance:
+MANDATORY CONFIDENCE RULES (these are non-negotiable):
+- NEVER write "I think", "I believe", "I feel", "I hope", "I guess", "I am a fan of", "I'm a fan of", "fan of", "I'm excited about", "I love what you're doing", or any phrase that sounds like admiration or uncertainty.
+- NEVER ask permission. NEVER say "I was hoping...", "I'd love to...", "I was wondering if..."
+- NEVER use "potentially", "possibly", "maybe", "could", "might", or "trying to".
+- The writer DOES things. Replace every weak phrase with a declarative statement:
+  BAD: "I think I can help with your community growth"
+  GOOD: "I build communities. Here is what I have done."
+  BAD: "I am a fan of what you are building"
+  GOOD: "You are scaling into X. I handle that."
+- Every sentence must either state a fact, reference a result, or name an action. No softeners. No hedging.
+
+MANDATORY PRE-OUTPUT CHECK — Before writing [DM READY], scan every sentence. If ANY sentence contains:
+"think", "believe", "feel", "hope", "fan of", "excited about", "love what", "could", "might", "possibly", "trying" — REWRITE THAT SENTENCE before continuing. No exceptions.
+
+EXTREME BANNED WORD LIST — Never use any of these, not even variants:
 leverage, synergy, cutting edge, game changing, thrilled, delighted, revolutionize, empower, unlock potential, seamless integration,
-Innovative, revolutionary, disruptive, next-generation, state-of-the-art, changing the game, groundbreaking, transformative, industry-leading,
-Strategic, partnership, value proposition, optimize, streamline, facilitate, ecosystem, solutions-oriented, scalability, paramount,
-Impressed by your work, excited to contribute, passionate about your mission, deeply resonate, inspired by your vision, committed to driving impact, dedication to excellence, pioneering, leading the way,
-As an AI, as a language model, I was trained, my training data, based on my knowledge, I should note that, it's worth mentioning that, I'd like to highlight, allow me to,
-Furthermore, moreover, additionally, consequently, therefore, in conclusion, it is important to note, as a result, notably, to summarize,
+innovative, revolutionary, disruptive, next-generation, state-of-the-art, changing the game, groundbreaking, transformative, industry-leading,
+strategic, partnership, value proposition, optimize, streamline, facilitate, ecosystem, solutions-oriented, scalability, paramount,
+impressed by your work, excited to contribute, passionate about your mission, deeply resonate, inspired by your vision, committed to driving impact, pioneering, leading the way,
+furthermore, moreover, additionally, consequently, therefore, in conclusion, as a result, notably, to summarize,
 I would like to take this opportunity, I would be honored, I possess a diverse skill set,
-could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, reach out, touch base, embark, journey,
-I think I can, I think, I believe, we think, we believe, I guess, maybe, hopefully, trying to, I am a fan of, I'm a fan of, fan of.
+robust, delve, foster, seamless, elevate, tapestry, reach out, touch base, embark, journey.
 
 --- NATURAL CONVERSATION FLOW (FOR DM READY OUTPUT) ---
 Your final DM must follow this structure:
@@ -1161,26 +1166,32 @@ The message must feel human, confident, and natural. It must never sound like a 
 
 Follow this exact 5-Stage framework. Output the thought process, ending with the final DM.
 
-CRITICAL TONE RULES:
-- Think Founder to Founder: Use a peer-to-peer tone that sounds collaborative and builder-focused.
-- Write like a sharp Head of BD — direct, credible, no fluff.
-- The writing should have personality and energy. It should not feel stiff, overly formal, or robotic.
-- Replace ALL weak phrasing: NEVER say "we think", "we believe", "we could", "we might". Use "We can", "We will", "We drive", "We have".
-- Do not exaggerate achievements. Show proof naturally by referencing real volume, TVL, or distribution.
-- NO SIGN OFFS. NEVER use "Thanks," "Best," or sign off with a name. The DM must end immediately after the final sentence.
-- Write a conversational message between 5-6 sentences total. Avoid long paragraphs. 
+IDENTITY — WHO IS WRITING THIS:
+You are writing on behalf of a founder or Head of BD who is SUPREMELY confident that their project brings real value. They are not angling for a favor or hoping to be noticed. They are communicating clearly as a peer. They already know the integration makes sense. Act accordingly.
 
-FULL BANNED WORD LIST - never use any of these, not even variants:
+MANDATORY CONFIDENCE RULES (these are non-negotiable):
+- NEVER write "we think", "we believe", "we feel", "we hope", "we guess", "we are a fan of", or any phrase that sounds like admiration or uncertainty.
+- NEVER ask permission. NEVER say "we were hoping...", "we'd love to...", "we were wondering if..."
+- NEVER use "potentially", "possibly", "maybe", "could", "might", or "trying to".
+- The sender DOES things. Replace every weak phrase with a declarative statement:
+  BAD: "We think we could be a great fit for your ecosystem"
+  GOOD: "We drive X volume. Here is what that looks like for you."
+  BAD: "We are big fans of what you are building"
+  GOOD: "You are expanding into X. We already operate there."
+- Every sentence must either state a fact, reference a result (TVL, volume, users), or name a concrete action.
+
+MANDATORY PRE-OUTPUT CHECK — Before writing [DM READY], scan every sentence. If ANY sentence contains:
+"think", "believe", "feel", "hope", "fan of", "excited about", "love what", "could", "might", "possibly", "trying", "we'd love" — REWRITE THAT SENTENCE before continuing. No exceptions.
+
+FULL BANNED WORD LIST — Never use any of these, not even variants:
 leverage, synergy, cutting edge, game changing, thrilled, delighted, revolutionize, empower, unlock potential, seamless integration,
-Innovative, revolutionary, disruptive, next-generation, state-of-the-art, changing the game, groundbreaking, transformative, industry-leading,
-Strategic, partnership, value proposition, optimize, streamline, facilitate, ecosystem, solutions-oriented, scalability,
-Impressed by your work, excited to contribute, passionate about your mission, deeply resonate, inspired by your vision, committed to driving impact, dedication to excellence, pioneering, leading the way, you're changing the game,
-As an AI, as a language model, I was trained, my training data, based on my knowledge, I should note that, it's worth mentioning that, I'd like to highlight, allow me to,
-Furthermore, moreover, additionally, consequently, therefore, in conclusion, it is important to note, as a result, notably, to summarize,
+innovative, revolutionary, disruptive, next-generation, state-of-the-art, changing the game, groundbreaking, transformative, industry-leading,
+strategic, partnership, value proposition, optimize, streamline, facilitate, ecosystem, solutions-oriented, scalability,
+impressed by your work, excited to contribute, passionate about your mission, deeply resonate, inspired by your vision, committed to driving impact, pioneering, leading the way, you're changing the game,
+furthermore, moreover, additionally, consequently, therefore, in conclusion, as a result, notably, to summarize,
 I am writing to express, I would like to take this opportunity, thank you for your time and consideration, I would be honored, I possess a diverse skill set,
-It's not just about X it's about Y, from X to Y, at the end of the day, this highlights the importance of, as you may know, with that being said,
-could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, testament, aligns, reach out, touch base,
-I think we can, I think, I believe, we think, we believe, I guess, maybe, hopefully, trying to, I am a fan of, I'm a fan of, fan of.
+it's not just about X it's about Y, at the end of the day, this highlights the importance of, as you may know, with that being said,
+robust, delve, foster, seamless, elevate, tapestry, testament, aligns, reach out, touch base.
 
 --- NATURAL CONVERSATION FLOW (FOR DM READY OUTPUT) ---
 Your final BD DM must follow this structure:
