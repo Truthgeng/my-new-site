@@ -956,18 +956,6 @@ async function generatePitch() {
         return;
     }
 
-    // Check Limits
-    if (!isPro && userCredits <= 0) {
-        openPricingModal();
-        return showPricingMsg('error', 'You are out of credits! Please purchase a credit bundle or upgrade to Pro to continue.');
-    }
-
-    // Enforce 5-pitch limit for free users
-    if (!isPro && totalPitchesGenerated >= 5) {
-        openPricingModal();
-        return showPricingMsg('error', 'You have reached the free limit of 5 pitches. Upgrade to Pro to unlock unlimited generation.');
-    }
-
     if (currentMode === 'bd') return generateBDPitch();
 
     const link = document.getElementById('xLink').value.trim();
