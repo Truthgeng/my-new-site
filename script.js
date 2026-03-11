@@ -155,6 +155,12 @@ sb.auth.onAuthStateChange(async (event, session) => {
         closeAuthModal();
     }
 
+    // On INITIAL_SESSION (page load), always force a fresh DB fetch to get live credit count
+    if (event === 'INITIAL_SESSION') {
+        lastLoadedUserId = null;
+        profileLoadPromise = null;
+    }
+
     currentUser = session?.user || null;
 
     try {
