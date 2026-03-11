@@ -9,6 +9,10 @@
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500&display=swap"
         rel="stylesheet">
     <link rel="icon" type="image/png" href="logo.png">
+    <script>
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    </script>
     <link rel="stylesheet" href="style.css?v=2">
 </head>
 <!-- Google icon reused via SVG symbol -->
@@ -392,6 +396,7 @@
             <img src="logo.png" alt="PitchProtocol" class="logo-icon">Pitch<span>Protocol</span>
         </div>
         <div class="header-right">
+            <button class="auth-btn" onclick="toggleTheme()" id="themeToggleBtn" style="padding: 6px 10px; font-size: 0.9rem;" title="Toggle Light/Dark Mode">☀️</button>
             <div id="walletArea" style="display:none; align-items:center; gap:0.5rem;">
                 <div class="badge" id="creditBadge" style="color:var(--acid); border-color:var(--acid);">3
                     Credits

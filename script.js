@@ -667,12 +667,13 @@ async function saveProfile() {
         let updatePayload = {};
 
         if (newName !== userFullName) {
-            // Re-verify Cooldown just in case
             if (userNameLastUpdated) {
                 const lastUpdate = new Date(userNameLastUpdated);
                 const nextAllowed = new Date(lastUpdate.getTime() + 30 * 24 * 60 * 60 * 1000);
-                if (new Date() < nextAllowed) {
-                    throw new Error("You cannot change your name yet.");
+                const now = new Date();
+                if (now < nextAllowed) {
+                    const daysRemaining = Math.ceil((nextAllowed - now) / (1000 * 60 * 60 * 24));
+                    throw new Error(`Name change cooldown active. You can change your name again in ${daysRemaining} days.`);
                 }
             }
             updatePayload.full_name = newName;
@@ -751,23 +752,10 @@ function populateDashboardUI() {
         document.getElementById('avatarPreview').style.border = '1px solid var(--border)';
     }
 
-    // Cooldown check for name
-    if (userNameLastUpdated) {
-        const lastUpdate = new Date(userNameLastUpdated);
-        const nextAllowed = new Date(lastUpdate.getTime() + 30 * 24 * 60 * 60 * 1000);
-        const now = new Date();
-        if (now < nextAllowed) {
-            const daysRemaining = Math.ceil((nextAllowed - now) / (1000 * 60 * 60 * 24));
-            document.getElementById('nameCooldownInfo').innerHTML = `<span style="color:#ff9500">You can change your name again in ${daysRemaining} days.</span>`;
-            document.getElementById('saveProfileBtn').disabled = true;
-        } else {
-            document.getElementById('nameCooldownInfo').innerHTML = `You can change your name.`;
-            document.getElementById('saveProfileBtn').disabled = false;
-        }
-    } else {
-        document.getElementById('nameCooldownInfo').innerHTML = `You can only change your name once every 30 days.`;
-        document.getElementById('saveProfileBtn').disabled = false;
-    }
+    // Cooldown check for name (Hidden until they try to save)
+    document.getElementById('nameCooldownInfo').innerHTML = ''; // Keep hidden by default
+    document.getElementById('saveProfileBtn').disabled = false; // Always allow them to attempt to save (e.g. for avatar changes)
+
 
     // Settings Tab
     document.getElementById('settingsTierVal').textContent = userTier.toUpperCase();
@@ -1745,3 +1733,29 @@ Keep it short and easy to read.No buzzwords, no "great question!" openers.`;
 
 
 
+
+/* ── Light / Dark Mode Toggle ─────────────────────────────── */
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) {
+        btn.textContent = savedTheme === 'light' ? '🌙' : '☀️';
+    }
+}
+
+function toggleTheme() {
+    const root = document.documentElement;
+    const currentTheme = root.getAttribute('data-theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) {
+        btn.textContent = newTheme === 'light' ? '🌙' : '☀️';
+    }
+}
+
+// Initialize button text on load
+document.addEventListener('DOMContentLoaded', initTheme);
