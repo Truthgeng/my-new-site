@@ -1119,11 +1119,11 @@ Analyze this project and generate the pitch using the 5-Stage framework.`;
         }
         generateRoadmap(link, niche, text, 'hire');
     } catch (err) {
-        if (err.message === '403') {
+        if (err.message && err.message.includes('Out of credits')) {
             showError('You are out of credits.');
             openPricingModal();
         } else {
-            showError('Something went wrong. Please try again.');
+            showError(err.message || 'Something went wrong. Please try again.');
         }
     }
     setLoading(false);
@@ -1251,11 +1251,11 @@ Analyze both projects and generate the BD pitch using the 5-Stage framework.`;
         }
         generateRoadmap(theirLink, myDesc, text, 'bd');
     } catch (err) {
-        if (err.message === '403') {
+        if (err.message && err.message.includes('Out of credits')) {
             showError('You are out of credits.');
             openPricingModal();
         } else {
-            showError('Something went wrong. Please try again.');
+            showError(err.message || 'Something went wrong. Please try again.');
         }
     }
     setLoading(false);
