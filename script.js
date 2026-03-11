@@ -201,7 +201,7 @@ sb.auth.onAuthStateChange(async (event, session) => {
 
                     if (finalProfile) {
                         userTier = finalProfile.tier || 'free';
-                        userCredits = finalProfile.credits ?? 0;
+                        userCredits = finalProfile.credits ?? 3;
                         proExpiresAt = finalProfile.pro_expires_at || null;
                         isPro = userTier === 'pro' && proExpiresAt && new Date(proExpiresAt) > new Date();
                         userFullName = finalProfile.full_name || '';
