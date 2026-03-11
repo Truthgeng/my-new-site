@@ -1022,7 +1022,7 @@ As an AI, as a language model, I was trained, my training data, based on my know
 Furthermore, moreover, additionally, consequently, therefore, in conclusion, it is important to note, as a result, notably, to summarize,
 I would like to take this opportunity, I would be honored, I possess a diverse skill set,
 could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, reach out, touch base, embark, journey,
-I think I can, I think, I believe, we think, we believe, I guess, maybe, hopefully, trying to.
+I think I can, I think, I believe, we think, we believe, I guess, maybe, hopefully, trying to, I am a fan of, I'm a fan of, fan of.
 
 --- NATURAL CONVERSATION FLOW (FOR DM READY OUTPUT) ---
 Your final DM must follow this structure:
@@ -1174,7 +1174,7 @@ Furthermore, moreover, additionally, consequently, therefore, in conclusion, it 
 I am writing to express, I would like to take this opportunity, thank you for your time and consideration, I would be honored, I possess a diverse skill set,
 It's not just about X it's about Y, from X to Y, at the end of the day, this highlights the importance of, as you may know, with that being said,
 could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, testament, aligns, reach out, touch base,
-I think we can, I think, I believe, we think, we believe, I guess, maybe, hopefully, trying to.
+I think we can, I think, I believe, we think, we believe, I guess, maybe, hopefully, trying to, I am a fan of, I'm a fan of, fan of.
 
 --- NATURAL CONVERSATION FLOW (FOR DM READY OUTPUT) ---
 Your final BD DM must follow this structure:
