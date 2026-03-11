@@ -1067,7 +1067,8 @@ textarea {
 
 /* ── Mode Toggle ─────────────────────────────────────────────── */
 .mode-toggle {
-    display: inline-flex;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
     margin-bottom: 3rem;
     border: 1px solid var(--border);
     border-radius: 30px;

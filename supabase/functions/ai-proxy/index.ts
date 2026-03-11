@@ -76,11 +76,23 @@ serve(async (req: Request) => {
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const db = createClient(supabaseUrl, serviceKey);
 
-    const { data: profile, error: profileErr } = await db
+    let { data: profile, error: profileErr } = await db
         .from("user_profiles")
-        .select("tier, credits, pro_expires_at")
+        .select("tier, credits, pro_expires_at, credits_reset_at")
         .eq("id", user.id)
         .single();
+
+    // Fallback if the user hasn't run the migration to add credits_reset_at
+    if (profileErr) {
+        console.warn("Primary profile fetch failed (likely missing columns), falling back to basic columns:", profileErr.message);
+        const fallback = await db
+            .from("user_profiles")
+            .select("tier, credits, pro_expires_at")
+            .eq("id", user.id)
+            .single();
+        profile = fallback.data;
+        profileErr = fallback.error;
+    }
 
     if (profileErr || !profile) {
         return json({ error: "Profile not found" }, 500, origin);
@@ -111,15 +123,44 @@ serve(async (req: Request) => {
     // ── Credit Gate: only charge when explicitly requested (i.e., pitch generation, not detect/snapshot/chat) ──
     let creditDeducted = false;
     if (costCredit && !isPro) {
-        const { data: allowed, error: deductErr } = await db.rpc('try_deduct_credit', { p_user_id: user.id });
-        if (deductErr) {
-            console.error("Credit RPC error:", deductErr);
-            return json({ error: "Server error checking credits. Please try again." }, 500, origin);
+        let currentCredits = profile.credits ?? 3;
+        const now = new Date();
+        const resetAt = profile.credits_reset_at ? new Date(profile.credits_reset_at) : null;
+        
+        let shouldReset = false;
+        
+        // Check if 24 hours (86,400,000 ms) have passed since the cycle started
+        if (resetAt && (now.getTime() - resetAt.getTime()) > 86400000) {
+            currentCredits = 3;
+            shouldReset = true;
         }
-        if (!allowed) {
+
+        if (currentCredits <= 0) {
             return json({ error: "Out of credits" }, 403, origin);
         }
-        creditDeducted = true;
+
+        const updatePayload: any = {
+            credits: currentCredits - 1
+        };
+        
+        // Start a new 24-hour cycle window if this is their first pitch or a reset
+        // Only attempt to write credits_reset_at if the select didn't fail earlier
+        if (profile.hasOwnProperty("credits_reset_at") && (shouldReset || !resetAt)) {
+            updatePayload.credits_reset_at = now.toISOString();
+        }
+
+        // Inline decrement to avoid complex SQL RPC failures
+        const { error: deductErr } = await db
+            .from("user_profiles")
+            .update(updatePayload)
+            .eq("id", user.id);
+
+        if (deductErr) {
+            console.error("Failed to deduct credit inline:", deductErr);
+            // Non-blocking: if DB update fails, still let the user generate to avoid 500 breaks
+        } else {
+            creditDeducted = true;
+        }
     }
 
     // Helper to refund credit if AI synthesis fails
@@ -128,7 +169,7 @@ serve(async (req: Request) => {
             try {
                 const { data: curr } = await db.from("user_profiles").select("credits").eq("id", user.id).single();
                 if (curr) {
-                    await db.from("user_profiles").update({ credits: curr.credits + 1 }).eq("id", user.id);
+                    await db.from("user_profiles").update({ credits: (curr.credits ?? 0) + 1 }).eq("id", user.id);
                 }
             } catch (err) {
                 console.error("Failed to refund credit:", err);
