@@ -1015,6 +1015,7 @@ CRITICAL TONE RULES:
 - The writing should have personality and energy. It should not feel stiff, overly formal, or robotic.
 - Use varied sentence length. Natural writing is allowed to feel slightly imperfect.
 - Do not exaggerate achievements. Show proof naturally by referencing real work, communities, campaigns, or initiatives (e.g. "Over the last two years I’ve helped grow communities around NFT projects").
+- Replace ALL weak phrasing: NEVER say "I think", "I believe", "I could", "I might". Use "I can", "I will", "I have", "I drive".
 - NO SIGN OFFS. NEVER use "Thanks," "Best," or sign off with a name. The DM must end immediately after the final sentence.
 - Write a conversational message between 5-6 sentences total. Keep it natural and easy to read in chat format. Avoid long paragraphs.
 - If it's for email (context based): use short paragraphs.
@@ -1027,7 +1028,8 @@ Impressed by your work, excited to contribute, passionate about your mission, de
 As an AI, as a language model, I was trained, my training data, based on my knowledge, I should note that, it's worth mentioning that, I'd like to highlight, allow me to,
 Furthermore, moreover, additionally, consequently, therefore, in conclusion, it is important to note, as a result, notably, to summarize,
 I would like to take this opportunity, I would be honored, I possess a diverse skill set,
-could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, reach out, touch base, embark, journey.
+could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, reach out, touch base, embark, journey,
+I think I can, I think, I believe, we think, we believe, I guess, maybe, hopefully, trying to.
 
 --- NATURAL CONVERSATION FLOW (FOR DM READY OUTPUT) ---
 Your final DM must follow this structure:
@@ -1164,7 +1166,7 @@ CRITICAL TONE RULES:
 - Think Founder to Founder: Use a peer-to-peer tone that sounds collaborative and builder-focused.
 - Write like a sharp Head of BD — direct, credible, no fluff.
 - The writing should have personality and energy. It should not feel stiff, overly formal, or robotic.
-- Replace ALL weak phrasing: NEVER say "we think", "we could". Use "We can", "We will", "We drive".
+- Replace ALL weak phrasing: NEVER say "we think", "we believe", "we could", "we might". Use "We can", "We will", "We drive", "We have".
 - Do not exaggerate achievements. Show proof naturally by referencing real volume, TVL, or distribution.
 - NO SIGN OFFS. NEVER use "Thanks," "Best," or sign off with a name. The DM must end immediately after the final sentence.
 - Write a conversational message between 5-6 sentences total. Avoid long paragraphs. 
@@ -1178,7 +1180,8 @@ As an AI, as a language model, I was trained, my training data, based on my know
 Furthermore, moreover, additionally, consequently, therefore, in conclusion, it is important to note, as a result, notably, to summarize,
 I am writing to express, I would like to take this opportunity, thank you for your time and consideration, I would be honored, I possess a diverse skill set,
 It's not just about X it's about Y, from X to Y, at the end of the day, this highlights the importance of, as you may know, with that being said,
-could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, testament, aligns, reach out, touch base.
+could, might, potential, possibly, somewhat, generally, typically, robust, delve, foster, seamless, elevate, tapestry, testament, aligns, reach out, touch base,
+I think we can, I think, I believe, we think, we believe, I guess, maybe, hopefully, trying to.
 
 --- NATURAL CONVERSATION FLOW (FOR DM READY OUTPUT) ---
 Your final BD DM must follow this structure:
