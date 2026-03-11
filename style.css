@@ -1070,11 +1070,14 @@ textarea {
     display: inline-flex;
     margin-bottom: 3rem;
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: 30px;
+    /* Fully rounded pill track */
     width: fit-content;
     position: relative;
-    background: rgba(255, 255, 255, 0.02);
-    overflow: hidden;
+    background: rgba(0, 0, 0, 0.4);
+    /* Darker track */
+    padding: 4px;
+    /* Space around the slider */
 }
 
 .mode-btn {
@@ -1090,6 +1093,7 @@ textarea {
     transition: color 0.22s;
     position: relative;
     z-index: 1;
+    border-radius: 30px;
 }
 
 .mode-btn.active {
@@ -1099,14 +1103,15 @@ textarea {
 
 .mode-slider {
     position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 50%;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    width: calc(50% - 4px);
     background: var(--grad);
-    transition: transform 0.28s var(--ease-in-out);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 0;
-    border-radius: calc(var(--radius) - 1px);
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(200, 255, 0, 0.2);
 }
 
 .mode-toggle.bd .mode-slider {

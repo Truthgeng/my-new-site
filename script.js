@@ -270,7 +270,7 @@ sb.auth.onAuthStateChange(async (event, session) => {
           <div class="user-dropdown-header"><div class="user-email">${escHtml(displayEmail)}</div></div>
           <button class="dropdown-item" onclick="openDashboard(); switchDashboardTab('profile'); closeDropdown()">Dashboard Overview</button>
           <button class="dropdown-item" onclick="startNewSession();closeDropdown()">New Pitch Session</button>
-          <button class="dropdown-item danger" onclick="handleSignOut()">↩ Sign Out</button>
+          <button class="dropdown-item danger" onclick="handleSignOut()">Sign Out</button>
         </div>
       </div>`;
 
@@ -841,7 +841,7 @@ async function loadHistory() {
 
     document.getElementById('dashboardHistoryList').innerHTML = data.map(s => `
     <div class="history-item ${s.id === currentSessionId ? 'active' : ''}" onclick="loadSession('${s.id}')">
-      <div class="history-item-title">${escHtml(s.title || 'Untitled Session')}</div>
+      <div class="history-item-title">${escHtml((s.title || 'Untitled Session').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B50}]/gu, '').trim())}</div>
       <div class="history-item-meta">${formatDate(s.created_at)}</div>
       <button class="history-delete" onclick="deleteSession(event,'${s.id}')">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
