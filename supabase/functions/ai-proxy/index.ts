@@ -88,16 +88,6 @@ serve(async (req: Request) => {
 
     const isPro = profile.tier === "pro" && new Date(profile.pro_expires_at) > new Date();
 
-    if (!isPro) {
-        // Use atomic RPC that checks, deducts, and handles 24h refresh in one locked transaction.
-        // This prevents race conditions where 3 parallel pitch calls all read credits > 0
-        // before any of them deducts, allowing generation past 0.
-        const { data: allowed, error: deductErr } = await db.rpc('try_deduct_credit', { p_user_id: user.id });
-        if (deductErr || !allowed) {
-            return json({ error: "Out of credits" }, 403, origin);
-        }
-    }
-
     // ── Groq key (server-side only in Supabase secrets) ──
     const groqKey = Deno.env.get("GROQ_KEY");
     if (!groqKey) {
@@ -113,21 +103,50 @@ serve(async (req: Request) => {
         return json({ error: "Invalid JSON body" }, 400, origin);
     }
 
-    const { system, messages, maxTokens, model } = body;
+    const { system, messages, maxTokens, model, costCredit } = body as { system?: string; messages?: unknown[]; maxTokens?: number; model?: string; response_format?: unknown; costCredit?: boolean };
     if (!system || !Array.isArray(messages)) {
         return json({ error: "Missing required fields: system, messages" }, 400, origin);
     }
 
+    // ── Credit Gate: only charge when explicitly requested (i.e., pitch generation, not detect/snapshot/chat) ──
+    let creditDeducted = false;
+    if (costCredit && !isPro) {
+        const { data: allowed, error: deductErr } = await db.rpc('try_deduct_credit', { p_user_id: user.id });
+        if (deductErr) {
+            console.error("Credit RPC error:", deductErr);
+            return json({ error: "Server error checking credits. Please try again." }, 500, origin);
+        }
+        if (!allowed) {
+            return json({ error: "Out of credits" }, 403, origin);
+        }
+        creditDeducted = true;
+    }
+
+    // Helper to refund credit if AI synthesis fails
+    const refundCreditIfDeducted = async () => {
+        if (creditDeducted) {
+            try {
+                const { data: curr } = await db.from("user_profiles").select("credits").eq("id", user.id).single();
+                if (curr) {
+                    await db.from("user_profiles").update({ credits: curr.credits + 1 }).eq("id", user.id);
+                }
+            } catch (err) {
+                console.error("Failed to refund credit:", err);
+            }
+        }
+    };
+
     // ── Forward to Groq ──
     try {
+        let bodyPayload = body as any;
         const groqPayload: Record<string, unknown> = {
             model: model || GROQ_MODEL,
             max_tokens: maxTokens ?? 1024,
             messages: [{ role: "system", content: system }, ...messages],
         };
 
-        if (body.response_format) {
-            groqPayload.response_format = body.response_format;
+        if (bodyPayload.response_format) {
+            groqPayload.response_format = bodyPayload.response_format;
         }
 
         const groqRes = await fetch(GROQ_API, {
@@ -140,6 +159,7 @@ serve(async (req: Request) => {
         });
 
         if (!groqRes.ok) {
+            await refundCreditIfDeducted();
             const errText = await groqRes.text();
             console.error("Groq API error:", groqRes.status, errText);
             return json({ error: `Groq error: ${groqRes.status}` }, 502, origin);
@@ -151,6 +171,7 @@ serve(async (req: Request) => {
         return json({ content }, 200, origin);
 
     } catch (e) {
+        await refundCreditIfDeducted();
         console.error("Proxy fetch error:", e);
         return json({ error: "AI request failed" }, 500, origin);
     }

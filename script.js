@@ -28,7 +28,7 @@ const AI_PROXY_URL = `${SUPABASE_URL}/functions/v1/ai-proxy`;
  * If the proxy fails (e.g., rate limits or function downtime), it falls back to
  * a direct API call using the local dev key to keep the app functional.
  */
-async function callAI(system, messages, maxTokens, modelOverride = null, isJson = false) {
+async function callAI(system, messages, maxTokens, modelOverride = null, isJson = false, costCredit = false) {
     if (!currentUser) throw new Error("Must be logged in to use AI features.");
 
     const { data: { session } } = await sb.auth.getSession();
@@ -38,7 +38,8 @@ async function callAI(system, messages, maxTokens, modelOverride = null, isJson 
         system,
         messages,
         maxTokens: maxTokens || 1024,
-        model: modelOverride
+        model: modelOverride,
+        costCredit  // only deduct credit when explicitly flagged
     };
 
     if (isJson) {
@@ -208,7 +209,7 @@ sb.auth.onAuthStateChange(async (event, session) => {
                         userNameLastUpdated = finalProfile.last_name_update || null;
                     } else {
                         userTier = 'free';
-                        userCredits = 3;
+                        userCredits = 0; // Safe fallback: don't show 3 credits if we can't confirm DB value
                         isPro = false;
                         userFullName = '';
                         userAvatarUrl = null;
@@ -1105,7 +1106,7 @@ DeFi Strategist, NFT Strategist, Game Economy Designer, AI x Web3 Specialist.
 Analyze this project and generate the pitch using the 5-Stage framework.`;
 
     try {
-        const text = await callAI(system, [{ role: 'user', content: prompt }], 1400);
+        const text = await callAI(system, [{ role: 'user', content: prompt }], 1400, null, false, true);
 
         // Deduct Credit (optimistic UI update only)
         // The actual deduction is now securely managed inside the ai-proxy Edge Function!
@@ -1244,7 +1245,7 @@ Key Opportunity: ${snapshotData ? snapshotData.opportunity : 'Unknown'}
 Analyze both projects and generate the BD pitch using the 5-Stage framework.`;
 
     try {
-        const text = await callAI(system, [{ role: 'user', content: prompt }], 1600);
+        const text = await callAI(system, [{ role: 'user', content: prompt }], 1600, null, false, true);
 
         // Deduct Credit (optimistic UI update only)
         // The actual deduction is now securely managed inside the ai-proxy Edge Function!
