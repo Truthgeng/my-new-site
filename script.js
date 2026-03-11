@@ -1107,12 +1107,10 @@ Analyze this project and generate the pitch using the 5-Stage framework.`;
     try {
         const text = await callAI(system, [{ role: 'user', content: prompt }], 1400);
 
-        // Deduct Credit (simulated backend call)
+        // Deduct Credit (optimistic UI update only)
+        // The actual deduction is now securely managed inside the ai-proxy Edge Function!
         if (!isPro) {
-            userCredits -= 1;
-            // Fix: update credits correctly; total_pitches_generated is incremented
-            // server-side via the Edge Function in production (avoids race conditions).
-            await sb.from('user_profiles').update({ credits: userCredits }).eq('id', currentUser.id);
+            userCredits = Math.max(0, userCredits - 1);
             updateAuthUI();
         }
 
@@ -1131,7 +1129,14 @@ Analyze this project and generate the pitch using the 5-Stage framework.`;
             }
         }
         generateRoadmap(link, niche, text, 'hire');
-    } catch { showError('Something went wrong. Please try again.'); }
+    } catch (err) {
+        if (err.message === '403') {
+            showError('You are out of credits.');
+            openPricingModal();
+        } else {
+            showError('Something went wrong. Please try again.');
+        }
+    }
     setLoading(false);
 }
 
@@ -1239,10 +1244,10 @@ Analyze both projects and generate the BD pitch using the 5-Stage framework.`;
     try {
         const text = await callAI(system, [{ role: 'user', content: prompt }], 1600);
 
-        // Deduct Credit
+        // Deduct Credit (optimistic UI update only)
+        // The actual deduction is now securely managed inside the ai-proxy Edge Function!
         if (!isPro) {
-            userCredits -= 1;
-            await sb.from('user_profiles').update({ credits: userCredits }).eq('id', currentUser.id);
+            userCredits = Math.max(0, userCredits - 1);
             updateAuthUI();
         }
 
@@ -1260,7 +1265,14 @@ Analyze both projects and generate the BD pitch using the 5-Stage framework.`;
             }
         }
         generateRoadmap(theirLink, myDesc, text, 'bd');
-    } catch { showError('Something went wrong. Please try again.'); }
+    } catch (err) {
+        if (err.message === '403') {
+            showError('You are out of credits.');
+            openPricingModal();
+        } else {
+            showError('Something went wrong. Please try again.');
+        }
+    }
     setLoading(false);
 }
 

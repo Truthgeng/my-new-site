@@ -72,6 +72,27 @@ serve(async (req: Request) => {
         return json({ error: "Invalid JWT" }, 401, origin);
     }
 
+    // ── Enforce Billing Rules via Service Role ──
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const db = createClient(supabaseUrl, serviceKey);
+
+    const { data: profile, error: profileErr } = await db
+        .from("user_profiles")
+        .select("tier, credits, pro_expires_at")
+        .eq("id", user.id)
+        .single();
+
+    if (profileErr || !profile) {
+        return json({ error: "Profile not found" }, 500, origin);
+    }
+
+    const isPro = profile.tier === "pro" && new Date(profile.pro_expires_at) > new Date();
+
+    if (!isPro && profile.credits <= 0) {
+        // Halt generation immediately. Inform the UI to show the Upgrade modal.
+        return json({ error: "Out of credits" }, 403, origin);
+    }
+
     // ── Groq key (server-side only in Supabase secrets) ──
     const groqKey = Deno.env.get("GROQ_KEY");
     if (!groqKey) {
@@ -121,6 +142,13 @@ serve(async (req: Request) => {
 
         const data = await groqRes.json();
         const content = data.choices?.[0]?.message?.content ?? "";
+
+        // ── Success: Deduct Credit if not Pro ──
+        if (!isPro) {
+            // We use raw RPC or standard update. Standard update is fine since trigger protects client, not service role.
+            await db.rpc('increment_pitch_count', { user_id: user.id });
+        }
+
         return json({ content }, 200, origin);
 
     } catch (e) {
