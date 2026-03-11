@@ -14,6 +14,17 @@
         if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
     </script>
     <link rel="stylesheet" href="style.css?v=2">
+    <style>
+        /* Mobile Header Fixes */
+        @media(max-width: 600px) {
+            .header-right { gap: 0.4rem; }
+            #themeToggleBtn { padding: 4px 6px !important; font-size: 0.8rem !important; }
+            #walletArea .auth-btn { padding: 4px 8px; font-size: 0.6rem; }
+            #walletArea .badge { padding: 3px 6px; font-size: 0.55rem; }
+            .user-avatar { width: 30px; height: 30px; font-size: 0.65rem; }
+            header { padding: 0.75rem 1rem !important; }
+        }
+    </style>
 </head>
 <!-- Google icon reused via SVG symbol -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
@@ -213,7 +224,7 @@
 
                         <!-- Web3 Builder Pack Content -->
                         <div class="pack-card hidden" id="contentPackWeb3"
-                            style="border:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem;border-radius:12px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 24px rgba(0,0,0,0.2);">
+                            style="border:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem;border-radius:12px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 24px var(--glow-soft);">
                             <div
                                 style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--white);font-weight:700;font-size:1.2rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem;">
                                 Web3 Builder Pack
@@ -243,17 +254,17 @@
                             <h4 style="color:var(--white);font-size:0.9rem;margin-bottom:0.5rem;">Copy-Paste
                                 Template:
                             </h4>
-                            <textarea id="templateWeb3" readonly
-                                style="width:100%;border-radius:8px;background:rgba(17,24,39,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:1rem;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.5;resize:none;outline:none;box-sizing:border-box;min-height:165px;"></textarea>
-                            <button onclick="copyTemplate('templateWeb3', this)"
-                                style="margin-top:0.5rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;cursor:pointer;transition:all 0.2s;">
+                            <textarea id="templateWeb3" readonly class="form-input"
+                                style="width:100%;resize:none;box-sizing:border-box;min-height:165px;"></textarea>
+                            <button class="auth-btn" onclick="copyTemplate('templateWeb3', this)"
+                                style="margin-top:0.5rem;padding:6px 14px;border-color:var(--border);color:var(--muted);">
                                 Copy Template
                             </button>
                         </div>
 
                         <!-- Founder Pack Content -->
                         <div class="pack-card hidden" id="contentPackFounder"
-                            style="border:1px solid var(--border);padding:1.5rem;border-radius:12px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 24px rgba(0,0,0,0.2);">
+                            style="border:1px solid var(--border);padding:1.5rem;border-radius:12px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 24px var(--glow-soft);">
                             <div
                                 style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--white);font-weight:700;font-size:1.2rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem;">
                                 Cold DM Founder Pack
@@ -281,10 +292,10 @@
                             <h4 style="color:var(--white);font-size:0.9rem;margin-bottom:0.5rem;">Copy-Paste
                                 Template:
                             </h4>
-                            <textarea id="templateFounder" readonly
-                                style="width:100%;border-radius:8px;background:rgba(17,24,39,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:1rem;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--muted);line-height:1.5;resize:none;outline:none;box-sizing:border-box;min-height:165px;"></textarea>
-                            <button onclick="copyTemplate('templateFounder', this)"
-                                style="margin-top:0.5rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;cursor:pointer;transition:all 0.2s;">
+                            <textarea id="templateFounder" readonly class="form-input"
+                                style="width:100%;resize:none;box-sizing:border-box;min-height:165px;"></textarea>
+                            <button class="auth-btn" onclick="copyTemplate('templateFounder', this)"
+                                style="margin-top:0.5rem;padding:6px 14px;border-color:var(--border);color:var(--muted);">
                                 Copy Template
                             </button>
                         </div>
