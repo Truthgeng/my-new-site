@@ -843,7 +843,9 @@ async function loadHistory() {
     <div class="history-item ${s.id === currentSessionId ? 'active' : ''}" onclick="loadSession('${s.id}')">
       <div class="history-item-title">${escHtml(s.title || 'Untitled Session')}</div>
       <div class="history-item-meta">${formatDate(s.created_at)}</div>
-      <button class="history-delete" onclick="deleteSession(event,'${s.id}')">✕</button>
+      <button class="history-delete" onclick="deleteSession(event,'${s.id}')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
     </div>`).join('');
 }
 
@@ -998,7 +1000,10 @@ async function generatePitch() {
         <div class="snap-field full"><div class="snap-key" style="color:#ff9500;">What To Do</div>
           <div class="snap-val">Find the project's X handle and paste that instead. It typically looks like <span style="color:var(--acid)">x.com/ProjectName</span>.</div></div>
         <div class="snap-field full" style="margin-top:0.5rem;">
-          <button onclick="clearAll()" style="background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;padding:6px 16px;cursor:pointer;transition:all 0.2s;border-radius:6px;">✕ Start Over</button>
+          <button onclick="clearAll()" style="display:flex;align-items:center;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;padding:6px 16px;cursor:pointer;transition:all 0.2s;border-radius:6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> 
+            Start Over
+          </button>
         </div>
       </div>`;
         setLoading(false); return;
@@ -1117,7 +1122,7 @@ Analyze this project and generate the pitch using the 5-Stage framework.`;
         // Save Pitch History if Pro
         if (currentUser && !currentSessionId) {
             if (isPro) {
-                const title = `⚡ ${handle}`;
+                const title = `Pitch: ${handle}`;
                 await ensureSession(title, 'hire');
                 if (currentSessionId) await sb.from('chat_sessions').update({ pitch_context: pitchContext }).eq('id', currentSessionId);
             } else {
@@ -1249,7 +1254,7 @@ Analyze both projects and generate the BD pitch using the 5-Stage framework.`;
 
         if (currentUser && !currentSessionId) {
             if (isPro) {
-                const title = `🤝 ${myHandle} → ${theirHandle} `;
+                const title = `BD: ${myHandle} → ${theirHandle}`;
                 await ensureSession(title, 'bd');
                 if (currentSessionId) await sb.from('chat_sessions').update({ pitch_context: pitchContext }).eq('id', currentSessionId);
             } else {
@@ -1492,12 +1497,12 @@ function toSentenceCase(str) {
 
 const SECTIONS = ['[STAGE 1]', '[STAGE 2]', '[STAGE 3]', '[STAGE 4]', '[STAGE 5]', '[DM READY]'];
 const LABELS = {
-    '[STAGE 1]': '🎯 Clarified Ask',
-    '[STAGE 2]': '💡 Defined Value',
-    '[STAGE 3]': '🔗 Value + Ask Connection',
-    '[STAGE 4]': '📝 DM Draft Structure',
-    '[STAGE 5]': '✨ Polish',
-    '[DM READY]': '📩 Final DM (Ready to Send)'
+    '[STAGE 1]': 'Clarified Ask',
+    '[STAGE 2]': 'Defined Value',
+    '[STAGE 3]': 'Value + Ask Connection',
+    '[STAGE 4]': 'DM Draft Structure',
+    '[STAGE 5]': 'Polish',
+    '[DM READY]': 'Final DM (Ready to Send)'
 };
 
 function renderPitch(text, targetHandle, context, mode, myHandle) {
@@ -1668,7 +1673,7 @@ Keep it short and easy to read.No buzzwords, no "great question!" openers.`;
         chatHistory.push({ role: 'assistant', content: reply });
         addChatMsg('ai', reply);
         if (currentUser) {
-            if (!currentSessionId) await ensureSession((currentMode === 'bd' ? '🤝' : '💬') + ' Chat — ' + new Date().toLocaleDateString(), currentMode);
+            if (!currentSessionId) await ensureSession((currentMode === 'bd' ? 'BD' : 'General') + ' Chat — ' + new Date().toLocaleDateString(), currentMode);
             await saveMsg('user', q);
             await saveMsg('assistant', reply);
         }
