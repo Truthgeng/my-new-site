@@ -201,7 +201,7 @@ sb.auth.onAuthStateChange(async (event, session) => {
 
                     if (finalProfile) {
                         userTier = finalProfile.tier || 'free';
-                        userCredits = finalProfile.credits ?? 3;
+                        userCredits = finalProfile.credits ?? 0;
                         proExpiresAt = finalProfile.pro_expires_at || null;
                         isPro = userTier === 'pro' && proExpiresAt && new Date(proExpiresAt) > new Date();
                         userFullName = finalProfile.full_name || '';
@@ -965,6 +965,13 @@ async function generatePitch() {
 
     if (currentMode === 'bd') return generateBDPitch();
 
+    // Hard guard — block generation entirely when out of credits
+    if (!isPro && userCredits <= 0) {
+        showError('You are out of credits. Upgrade to Pro for unlimited pitches.');
+        openPricingModal();
+        return;
+    }
+
     const link = document.getElementById('xLink').value.trim();
     const niche = document.getElementById('niche').value.trim();
     const targetDesc = document.getElementById('targetDesc').value.trim();
@@ -1143,6 +1150,13 @@ Analyze this project and generate the pitch using the 5-Stage framework.`;
 
 /* ── BD Pitch ── */
 async function generateBDPitch() {
+    // Hard guard — block generation entirely when out of credits
+    if (!isPro && userCredits <= 0) {
+        showError('You are out of credits. Upgrade to Pro for unlimited pitches.');
+        openPricingModal();
+        return;
+    }
+
     const myLink = document.getElementById('myProjectLink').value.trim();
     const myDesc = document.getElementById('myProjectDesc').value.trim();
     const theirLink = document.getElementById('theirProjectLink').value.trim();
