@@ -374,7 +374,22 @@ async function handleSignUp() {
             throw error;
         }
         console.log("[Auth] Sign Up Request Sent - confirmation email dispatched");
-        showModalMsg('signupMsg', 'success', 'Almost there! Check your inbox and click the confirmation link to activate your account.');
+        showModalMsg('signupMsg', 'success', 'Almost there! Check your inbox to confirm. We will automatically log you in here once you click the link!');
+        
+        // Start background polling to magically log them in on THIS browser the second they click the link on their phone
+        let pollAttempts = 0;
+        const bgPoll = setInterval(async () => {
+            pollAttempts++;
+            if (pollAttempts > 120) return clearInterval(bgPoll); // Stomp out after 6 minutes
+            
+            const { data } = await sb.auth.signInWithPassword({ email, password: pw });
+            if (data?.session) {
+                clearInterval(bgPoll);
+                console.log("[Auth] Background magic login successful!");
+                closeAuthModal();
+                openDashboard();
+            }
+        }, 3000);
     } catch (e) {
         console.error("[Auth] Catch block Sign Up Error:", e);
         let msg = e.message || 'Error creating account.';
