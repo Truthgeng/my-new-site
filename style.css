@@ -2346,3 +2346,70 @@ textarea {
     background: rgba(255, 255, 255, 0.9);
     color: #0f172a;
 }
+
+/* ── Light Theme: Chat Panel Overrides ── */
+[data-theme="light"] .chat-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(15, 23, 42, 0.1);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .chat-panel-header {
+    background: rgba(15, 23, 42, 0.03);
+    border-bottom-color: rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .chat-panel-title {
+    color: #0f172a;
+}
+
+[data-theme="light"] .chat-msg.user .chat-bubble {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+}
+
+[data-theme="light"] .chat-msg.ai .chat-bubble {
+    background: rgba(15, 23, 42, 0.05);
+    color: #334155;
+    border-left-color: var(--accent);
+    border-color: rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .chat-typing {
+    background: rgba(15, 23, 42, 0.05);
+    border-color: rgba(15, 23, 42, 0.1);
+    border-left-color: var(--accent);
+}
+
+[data-theme="light"] .chat-input-row {
+    border-top-color: rgba(15, 23, 42, 0.1);
+    background: #ffffff;
+}
+
+[data-theme="light"] .chat-input {
+    color: #0f172a;
+}
+
+[data-theme="light"] .chat-input::placeholder {
+    color: rgba(15, 23, 42, 0.4);
+}
+
+[data-theme="light"] .chat-suggestions {
+    border-top-color: rgba(15, 23, 42, 0.1);
+    background: #ffffff;
+}
+
+[data-theme="light"] .chat-pill {
+    border-color: rgba(15, 23, 42, 0.15);
+    color: #334155;
+}
+
+[data-theme="light"] .chat-msg-role {
+    color: rgba(15, 23, 42, 0.6);
+}
+
+[data-theme="light"] .chat-save-indicator {
+    border-bottom-color: rgba(15, 23, 42, 0.1);
+    color: rgba(15, 23, 42, 0.6);
+}

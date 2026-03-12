@@ -18,6 +18,79 @@ const sb = supabase.createClient(
 
 
 /* ── AI Config ── */
+
+/* ── Banned Word Sanitizer ────────────────────────────────────────────
+ * Two-layer enforcement: the AI system prompts list forbidden words,
+ * AND this function scrubs any that slip through before they render.
+ */
+const BANNED_REPLACEMENTS = [
+    [/\byou'?re changing the game\b/gi, 'you stand out'],
+    [/\bgame[- ]changer?\b/gi, 'strong asset'],
+    [/\bsynerg(?:y|ies|ize[sd]?)\b/gi, 'collaboration'],
+    [/\bdisruptive\b/gi, 'bold'],
+    [/\bdisrupt(?:ion)?\b/gi, 'reshape'],
+    [/\bleverag(?:e|ing|ed)\b/gi, 'use'],
+    [/\bpassionate about\b/gi, 'focused on'],
+    [/\bthrilled to\b/gi, 'ready to'],
+    [/\bexcited to\b/gi, 'ready to'],
+    [/\bexcited about\b/gi, 'interested in'],
+    [/\btransformative\b/gi, 'impactful'],
+    [/\bthought leader\b/gi, 'expert'],
+    [/\binnovative solution[s]?\b/gi, 'solution'],
+    [/\bvalue[- ]add\b/gi, 'contribution'],
+    [/\bbleeding[- ]edge\b/gi, 'cutting-edge'],
+    [/\bparadigm(?: shift)?\b/gi, 'shift'],
+    [/\brevolutionar(?:y|ize[sd]?)\b/gi, 'new'],
+    [/\bgroundbreaking\b/gi, 'notable'],
+    [/\bindustry[- ]leading\b/gi, 'leading'],
+    [/\bcircle back\b/gi, 'follow up'],
+    [/\bmove the needle\b/gi, 'make an impact'],
+    [/\bat the end of the day\b/gi, ''],
+    [/\bbest[- ]in[- ]class\b/gi, 'top-quality'],
+    [/\bworld[- ]class\b/gi, 'high-quality'],
+    [/\blockstar\b/gi, 'skilled professional'],
+    [/\bninja\b/gi, 'expert'],
+    [/\bguru\b/gi, 'expert'],
+    [/\btake it to the next level\b/gi, 'push further'],
+    [/\bscalable solution[s]?\b/gi, 'solution that scales'],
+    [/\brobust\b/gi, 'solid'],
+    [/\bseamless(?: integration)?\b/gi, 'smooth'],
+    [/\bholistic\b/gi, 'comprehensive'],
+    [/\bempowering\b/gi, 'enabling'],
+    [/\bpioneering\b/gi, 'forward-thinking'],
+    [/\bunlock(ing)? potential\b/gi, 'realise potential'],
+    [/\bvalue proposition\b/gi, 'value'],
+    [/\bstrategic partnership\b/gi, 'partnership'],
+    [/\boptimize\b/gi, 'improve'],
+    [/\bstreamline\b/gi, 'simplify'],
+    [/\bfacilitate\b/gi, 'help'],
+    [/\bsolutions[- ]oriented\b/gi, 'practical'],
+    [/\bparamount\b/gi, 'essential'],
+    [/\bdelve\b/gi, 'explore'],
+    [/\bfoster\b/gi, 'build'],
+    [/\belevate\b/gi, 'improve'],
+    [/\btapestry\b/gi, 'combination'],
+    [/\btestament\b/gi, 'proof'],
+    [/\bembark(ing)?\b/gi, 'start'],
+    [/\btouch base\b/gi, 'connect'],
+    [/\breach out\b/gi, 'contact'],
+    [/\bcommitted to driving impact\b/gi, 'focused on results'],
+    [/\bdeeply resonate[sd]?\b/gi, 'makes sense'],
+    [/\binspired by your vision\b/gi, 'aligned with your direction'],
+    [/\bimpressed by your work\b/gi, 'noticed your work'],
+];
+
+function sanitizePitch(text) {
+    if (!text) return text;
+    let result = text;
+    for (const [pattern, replacement] of BANNED_REPLACEMENTS) {
+        result = result.replace(pattern, replacement);
+    }
+    // Clean up double spaces left by empty-string replacements
+    return result.replace(/  +/g, ' ').replace(/ ([,.])/g, '$1').trim();
+}
+
+
 // All AI calls go through the Supabase Edge Function (ai-proxy).
 // The Groq API key is stored server-side only as a Supabase secret — never in the browser.
 const SUPABASE_URL = 'https://bqjvgsivwhnyjnzpglrd.supabase.co';
@@ -1493,8 +1566,8 @@ function renderSteps(steps, isBD) {
       <div class="step-num">${String(i + 1).padStart(2, '0')}</div>
       <div class="step-body">
         <div class="step-phase" style="color:${c}">${escHtml(s.phase)}</div>
-        <div class="step-title">${escHtml(toSentenceCase(s.title))}</div>
-        <div class="step-desc">${escHtml(toSentenceCase(s.description))}</div>
+        <div class="step-title">${escHtml(toSentenceCase(sanitizePitch(s.title)))}</div>
+        <div class="step-desc">${escHtml(toSentenceCase(sanitizePitch(s.description)))}</div>
         <span class="step-timing" style="background:${c}">${escHtml(s.timing)}</span>
       </div>
     </div>`;
@@ -1573,8 +1646,8 @@ function renderPitch(text, targetHandle, context, mode, myHandle) {
             let content = text.substring(startStr, endStr);
             // Clean up leading colons, dashes, asterisks, spaces
             content = content.replace(/^[\s:\-\*]+/, '').trim();
-            // Auto-fix all-caps AI output
-            content = toSentenceCase(content);
+            // Sanitize banned words first, then auto-fix all-caps
+            content = toSentenceCase(sanitizePitch(content));
 
             const contentText = escHtml(content);
 
@@ -1589,7 +1662,7 @@ function renderPitch(text, targetHandle, context, mode, myHandle) {
     } else {
         // Fallback if AI entirely ignored all formatting
         if (text && text.trim().length > 0) {
-            html += `<div class="pitch-text">${escHtml(toSentenceCase(text))}</div>`;
+            html += `<div class="pitch-text">${escHtml(toSentenceCase(sanitizePitch(text)))}</div>`;
         }
     }
 
