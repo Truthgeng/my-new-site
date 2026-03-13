@@ -208,6 +208,13 @@ function clearOutputs(hideRoadmap = true) {
     hideError();
 }
 
+/* ── Referrals ── */
+const urlParams = new URLSearchParams(window.location.search);
+const urlRefCode = urlParams.get('ref');
+if (urlRefCode) {
+    sessionStorage.setItem('pitchProtocolRefCode', urlRefCode);
+}
+
 /* ── Auth & Profile ── */
 // Supabase handles the OAuth callback automatically via detectSessionInUrl: true.
 // We just listen for auth state changes and update the UI accordingly.
@@ -257,9 +264,14 @@ sb.auth.onAuthStateChange(async (event, session) => {
                     // 2. If it doesn't exist (PGRST116), create it cleanly
                     if (fetchError && fetchError.code === 'PGRST116') {
                         console.log("[Auth] Profile not found, creating new profile...");
+                        const refCode = sessionStorage.getItem('pitchProtocolRefCode');
+                        const insertPayload = { id: currentUser.id };
+                        if (refCode && refCode !== currentUser.id) {
+                            insertPayload.referred_by = refCode;
+                        }
                         const { data: newProfile, error: insertError } = await sb
                             .from('user_profiles')
-                            .insert([{ id: currentUser.id }])
+                            .insert([insertPayload])
                             .select()
                             .single();
 
@@ -875,6 +887,13 @@ function populateDashboardUI() {
         adminPanel.style.display = currentUser?.email === 'truth7824@gmail.com' ? 'block' : 'none';
     }
 
+    // Set referral link
+    const refInput = document.getElementById('referralLinkInput');
+    if (refInput && currentUser) {
+        const baseUrl = window.location.origin + window.location.pathname;
+        refInput.value = `${baseUrl}?ref=${currentUser.id}`;
+    }
+
     // Hide upgrade/Get Pro buttons for Pro users
     const billingGetProBtn = document.querySelector('#dashContentBilling .auth-btn');
     if (billingGetProBtn) billingGetProBtn.style.display = isPro ? 'none' : '';
@@ -914,6 +933,18 @@ Are you guys looking to hand that stuff off so you can stay focused on the produ
         document.getElementById('contentPackWeb3').classList.add('hidden');
         document.getElementById('contentPackFounder').classList.add('hidden');
     }
+}
+
+function copyReferralLink() {
+    const input = document.getElementById('referralLinkInput');
+    const btn = document.getElementById('copyReferralBtn');
+    if (!input || !input.value || input.value === 'Loading...') return;
+    
+    navigator.clipboard.writeText(input.value).then(() => {
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = original; }, 2000);
+    });
 }
 
 /* ── History Sidebar (Deprecated -> Moved to Dashboard) ── */
