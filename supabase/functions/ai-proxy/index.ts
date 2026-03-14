@@ -132,7 +132,8 @@ serve(async (req: Request) => {
         let shouldReset = false;
         
         // Check if 24 hours (86,400,000 ms) have passed since the cycle started
-        if (resetAt && (now.getTime() - resetAt.getTime()) > 86400000) {
+        // Also treat null resetAt as "never started" = should reset (fixes old accounts)
+        if (!resetAt || (now.getTime() - resetAt.getTime()) > 86400000) {
             currentCredits = 3;
             shouldReset = true;
         }
@@ -145,8 +146,7 @@ serve(async (req: Request) => {
             credits: currentCredits - 1
         };
         
-        // Start a new 24-hour cycle window if this is their first pitch or a reset
-        // Only attempt to write credits_reset_at if the select didn't fail earlier
+        // Start a new 24-hour cycle window if this is their first pitch, a reset, or backfill
         if (profile.hasOwnProperty("credits_reset_at") && (shouldReset || !resetAt)) {
             updatePayload.credits_reset_at = now.toISOString();
         }
