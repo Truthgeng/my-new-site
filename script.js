@@ -222,6 +222,50 @@ if (urlRefCode) {
 let profileLoadPromise = null;
 let lastLoadedUserId = null;
 
+/* ── Google Auth Loading Overlay ── */
+function showAuthLoadingOverlay(msg = 'Signing you in...') {
+    let overlay = document.getElementById('authLoadingOverlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'authLoadingOverlay';
+        overlay.style.cssText = `
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(6,10,20,0.92);
+            backdrop-filter: blur(12px);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 1.2rem; transition: opacity 0.3s;
+        `;
+        overlay.innerHTML = `
+            <div style="width:48px;height:48px;border:3px solid rgba(96,165,250,0.2);border-top-color:#60a5fa;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+            <div id="authLoadingMsg" style="color:#eef2ff;font-family:'Inter',sans-serif;font-size:0.95rem;letter-spacing:0.05em;">${msg}</div>
+            <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+        `;
+        document.body.appendChild(overlay);
+    } else {
+        document.getElementById('authLoadingMsg').textContent = msg;
+    }
+}
+
+function hideAuthLoadingOverlay() {
+    const overlay = document.getElementById('authLoadingOverlay');
+    if (overlay) {
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 300);
+    }
+    sessionStorage.removeItem('googleAuthPending');
+}
+
+// Part B: If we're returning from Google OAuth, show the overlay immediately on page load
+(function checkOAuthReturn() {
+    const isOAuthReturn = window.location.search.includes('code=') || 
+                          window.location.hash.includes('access_token');
+    const wasPending = sessionStorage.getItem('googleAuthPending');
+    if (isOAuthReturn || wasPending) {
+        showAuthLoadingOverlay('Signing you in...');
+    }
+})();
+
 sb.auth.onAuthStateChange(async (event, session) => {
     console.log("Auth State Changed:", event, session?.user?.email);
 
@@ -233,7 +277,13 @@ sb.auth.onAuthStateChange(async (event, session) => {
                 window.history.replaceState({}, document.title, window.location.pathname);
             }, 500);
         }
+        hideAuthLoadingOverlay();
         closeAuthModal();
+    }
+
+    // Also hide on initial session (covers the refresh case)
+    if (event === 'INITIAL_SESSION') {
+        hideAuthLoadingOverlay();
     }
 
     // On INITIAL_SESSION (page load), always force a fresh DB fetch to get live credit count
@@ -487,20 +537,22 @@ async function handleSignUp() {
 
 async function handleGoogleAuth(btn) {
     console.log("[Auth] Starting Google OAuth flow...");
-    // Use the exact current page URL (no query params / hash) as the redirect destination
-    // This must match one of the URLs registered in Supabase Dashboard → Auth → URL Configuration
     const redirectTo = window.location.origin + (window.location.pathname === '/' ? '' : window.location.pathname);
     console.log("[Auth] Redirect URL:", redirectTo);
-    if (btn) { btn.textContent = 'Redirecting...'; btn.disabled = true; }
+
+    // Part A: Show loading overlay IMMEDIATELY on click so user sees feedback right away
+    showAuthLoadingOverlay('Connecting to Google...');
+    sessionStorage.setItem('googleAuthPending', '1');
+
+    if (btn) { btn.textContent = 'Connecting...'; btn.disabled = true; }
     try {
-        console.log("[Auth] Calling sb.auth.signInWithOAuth for Google...");
         const result = await sb.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: redirectTo
+                redirectTo: redirectTo,
+                skipBrowserRedirect: true  // get URL manually so we control the redirect
             }
         });
-        console.log("[Auth] signInWithOAuth call returned:", result);
         const { error, data } = result;
         if (error) {
             console.error("[Auth] Google OAuth Error:", error);
@@ -508,13 +560,15 @@ async function handleGoogleAuth(btn) {
         }
         if (data && data.url) {
             console.log("[Auth] Redirecting to Google:", data.url);
+            // Update overlay message then redirect
+            showAuthLoadingOverlay('Redirecting to Google...');
             window.location.href = data.url;
         } else {
-            console.warn("[Auth] No redirect URL returned from Supabase.");
+            throw new Error('No redirect URL returned from Supabase.');
         }
     } catch (e) {
         console.error("[Auth] Catch block Google Error:", e);
-        // Restore the Google button with its SVG icon
+        hideAuthLoadingOverlay();
         if (btn) {
             btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24"><use href="#icon-google" /></svg> Continue with Google`;
             btn.disabled = false;
