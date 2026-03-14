@@ -497,8 +497,7 @@ async function handleGoogleAuth(btn) {
         const result = await sb.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: redirectTo,
-                queryParams: { prompt: 'select_account' }
+                redirectTo: redirectTo
             }
         });
         console.log("[Auth] signInWithOAuth call returned:", result);
