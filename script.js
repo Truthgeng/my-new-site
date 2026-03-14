@@ -1881,16 +1881,20 @@ document.addEventListener('DOMContentLoaded', initTheme);
 function openTeamModal(e) {
     if(e) e.preventDefault();
     const modal = document.getElementById('teamModal');
+    const overlay = document.getElementById('teamModal');
     if(modal) {
-        modal.classList.add('show');
+        modal.classList.add('open');
+        overlay.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
 }
 
 function closeTeamModal() {
     const modal = document.getElementById('teamModal');
+    const overlay = document.getElementById('teamModal');
     if(modal) {
-        modal.classList.remove('show');
+        modal.classList.remove('open');
+        overlay.classList.remove('open');
         document.body.style.overflow = '';
     }
 }
