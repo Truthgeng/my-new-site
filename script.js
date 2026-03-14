@@ -1878,3 +1878,25 @@ function toggleTheme() {
 
 // Initialize button text on load
 document.addEventListener('DOMContentLoaded', initTheme);
+
+function openTeamModal(e) {
+    if(e) e.preventDefault();
+    const modal = document.getElementById('teamModal');
+    if(modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeTeamModal() {
+    const modal = document.getElementById('teamModal');
+    if(modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+}
+
+document.getElementById('teamModal')?.addEventListener('mousedown', (e) => {
+    if (e.target === document.getElementById('teamModal')) closeTeamModal();
+});
+
