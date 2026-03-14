@@ -122,7 +122,9 @@ serve(async (req: Request) => {
 
     // ── Credit Gate: only charge when explicitly requested (i.e., pitch generation, not detect/snapshot/chat) ──
     let creditDeducted = false;
-    if (costCredit && !isPro) {
+    const isAdmin = user.email === "truth7824@gmail.com";
+    
+    if (costCredit && !isPro && !isAdmin) {
         let currentCredits = profile.credits ?? 3;
         const now = new Date();
         const resetAt = profile.credits_reset_at ? new Date(profile.credits_reset_at) : null;

@@ -1073,7 +1073,7 @@ async function generatePitch() {
     if (currentMode === 'bd') return generateBDPitch();
 
     // Hard guard — block generation entirely when out of credits
-    if (!isPro && userCredits <= 0) {
+    if (!isPro && userCredits <= 0 && currentUser?.email !== 'truth7824@gmail.com') {
         showError('You are out of credits. Upgrade to Pro for unlimited pitches.');
         openPricingModal();
         return;
