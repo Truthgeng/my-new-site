@@ -611,13 +611,18 @@
     </div>
 
     <footer style="text-align: center; padding: 2rem; color: var(--muted); font-size: 0.8rem;">
-        <div style="margin-bottom: 0.5rem;">Built for the 1% who take action.</div>
-        <div style="display: flex; justify-content: center; gap: 1rem;">
-            <a href="#" onclick="openTeamModal(event)" style="color: var(--muted); text-decoration: none;">Team</a>
-            <a href="#" onclick="openContactModal(event)" style="color: var(--muted); text-decoration: none;">Contact</a>
-            <a href="/privacy.html" style="color: var(--muted); text-decoration: none;">Privacy Policy</a>
-            <a href="/terms.html" style="color: var(--muted); text-decoration: none;">Terms of Service</a>
+        <div style="margin-bottom: 1.5rem;">
+            <div style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; color: var(--white); font-size: 0.9rem; margin-bottom: 0.3rem; letter-spacing: -0.02em;">PitchProtocol</div>
+            <div>&copy; <span id="currentYear"></span> PitchProtocol</div>
         </div>
+        <div style="margin-bottom: 1rem; font-style: italic;">Built for the 1% who take action.</div>
+        <div style="display: flex; justify-content: center; gap: 1rem;">
+            <a href="#" onclick="openTeamModal(event)" style="color: var(--muted); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--muted)'">Team</a>
+            <a href="#" onclick="openContactModal(event)" style="color: var(--muted); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--muted)'">Contact</a>
+            <a href="/privacy.html" style="color: var(--muted); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--muted)'">Privacy Policy</a>
+            <a href="/terms.html" style="color: var(--muted); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--muted)'">Terms of Service</a>
+        </div>
+        <script>document.getElementById('currentYear').textContent = new Date().getFullYear();</script>
     </footer>
 
     <!-- Chat FAB -->
