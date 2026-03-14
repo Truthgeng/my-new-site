@@ -543,7 +543,7 @@
 
     <!-- Team Modal -->
     <div class="modal-overlay" id="teamModal">
-        <div class="modal" style="max-width: 420px; text-align: center; padding: 2rem;">
+        <div class="modal" style="max-width: 440px; text-align: left; padding: 2rem;">
             <button class="modal-close" onclick="closeTeamModal()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -551,35 +551,45 @@
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
             </button>
-            <div style="margin-bottom: 1.5rem; position: relative; z-index: 1;">
-                <div style="position: relative; width: 90px; height: 90px; margin: 0 auto 1.2rem;">
-                    <div style="position: absolute; inset: -4px; background: var(--grad); border-radius: 50%; opacity: 0.5; filter: blur(10px); z-index: -1;"></div>
-                    <img src="founder.jpg" alt="Truth" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--bg2); object-fit: cover; background: var(--bg2); position: relative; z-index: 2; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-                </div>
-                <h2 class="modal-title" style="margin-bottom: 0.3rem;">Truth</h2>
-                <p style="color: var(--accent); font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1.2rem;">Founder of PitchProtocol</p>
-                <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6; font-style: italic;">"I build cool stuffs..."</p>
-            </div>
             
-            <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
-                <a href="https://x.com/heistruthx" target="_blank" style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.05); padding: 0.6rem 1rem; border-radius: 8px; color: var(--white); text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; font-size: 0.85rem;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    Truth
-                </a>
-                <a href="https://github.com/Truthgeng" target="_blank" style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.05); padding: 0.6rem 1rem; border-radius: 8px; color: var(--white); text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; font-size: 0.85rem;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    GitHub
-                </a>
-            </div>
+            <div style="display: flex; flex-direction: column; gap: 2.5rem;">
+                <!-- Founder Section -->
+                <div>
+                    <h3 style="font-size: 0.85rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem; font-family: 'Inter', sans-serif;">founder</h3>
+                    <div style="display: flex; align-items: flex-start; gap: 1.2rem;">
+                        <div style="position: relative; width: 70px; height: 70px; flex-shrink: 0;">
+                            <div style="position: absolute; inset: -4px; background: var(--grad); border-radius: 50%; opacity: 0.5; filter: blur(8px); z-index: -1;"></div>
+                            <img src="founder.jpg" alt="Truth" style="width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--bg2); object-fit: cover; background: var(--bg2); position: relative; z-index: 2; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                        </div>
+                        <div>
+                            <h2 class="modal-title" style="font-size: 1.4rem; margin-bottom: 0.2rem; text-transform: lowercase;">truth</h2>
+                            <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5; font-style: italic; margin-bottom: 0.8rem;">"i build cool stuffs..."</p>
+                            <div style="display: flex; gap: 0.8rem;">
+                                <a href="https://x.com/heistruthx" target="_blank" style="display: flex; align-items: center; gap: 0.4rem; color: var(--muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                    @heistruthx
+                                </a>
+                                <a href="https://github.com/Truthgeng" target="_blank" style="display: flex; align-items: center; gap: 0.4rem; color: var(--muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                    github
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div style="padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center;">
-                <h3 style="font-size: 0.95rem; color: var(--white); margin-bottom: 0.4rem; font-family: 'Plus Jakarta Sans', sans-serif;">Get In Touch</h3>
-                <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.5;">We highly value your feedback. Reach out to us on the official X page.</p>
-                
-                <a href="https://x.com/pitchprotocolhq" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; background: var(--grad); color: var(--bg); font-weight: 700; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    @pitchprotocolhq
-                </a>
+                <!-- Contact Section -->
+                <div>
+                    <h3 style="font-size: 0.85rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; font-family: 'Inter', sans-serif;">get in touch</h3>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem;">
+                        <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.5;">we highly value your feedbacks. reach out to us on the official x page.</p>
+                        
+                        <a href="https://x.com/pitchprotocolhq" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; background: var(--grad); color: var(--bg); font-weight: 700; padding: 0.6rem 1.2rem; border-radius: 8px; text-decoration: none; font-size: 0.8rem; letter-spacing: 0.05em; text-transform: lowercase; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                            @pitchprotocolhq
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
