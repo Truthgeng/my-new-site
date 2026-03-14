@@ -1899,6 +1899,27 @@ function closeTeamModal() {
     }
 }
 
+function openContactModal(e) {
+    if(e) e.preventDefault();
+    const modal = document.getElementById('contactModal');
+    const overlay = document.getElementById('contactModal');
+    if(modal) {
+        modal.classList.add('open');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeContactModal() {
+    const modal = document.getElementById('contactModal');
+    const overlay = document.getElementById('contactModal');
+    if(modal) {
+        modal.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+}
+
 document.getElementById('teamModal')?.addEventListener('mousedown', (e) => {
     if (e.target === document.getElementById('teamModal')) closeTeamModal();
 });
