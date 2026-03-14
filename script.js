@@ -281,9 +281,16 @@ sb.auth.onAuthStateChange(async (event, session) => {
         closeAuthModal();
     }
 
-    // Also hide on initial session (covers the refresh case)
+    // Hide on INITIAL_SESSION only if we are NOT in the middle of an OAuth return.
+    // During OAuth return, Supabase fires INITIAL_SESSION (no session yet) THEN SIGNED_IN.
+    // If we hide the overlay on INITIAL_SESSION here it disappears before the user is logged in.
     if (event === 'INITIAL_SESSION') {
-        hideAuthLoadingOverlay();
+        const isOAuthReturn = window.location.search.includes('code=') || 
+                              window.location.hash.includes('access_token') ||
+                              sessionStorage.getItem('googleAuthPending');
+        if (!isOAuthReturn) {
+            hideAuthLoadingOverlay();
+        }
     }
 
     // On INITIAL_SESSION (page load), always force a fresh DB fetch to get live credit count
